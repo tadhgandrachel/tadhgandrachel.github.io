@@ -33,7 +33,7 @@
 
 var GUEST_SHEET = "Guests";
 var SITE_URL = "https://tadhgandrachel.github.io/";
-var NOTIFY_EMAIL = ""; // optional alerts, e.g. "rachel.and.tadhg@example.com"
+var NOTIFY_EMAIL = "tadhgok13@gmail.com"; // optional alerts, e.g. "rachel.and.tadhg@example.com"
 
 var HEADERS = [
   "Token",

@@ -259,7 +259,11 @@
   }
 
   function guestToken() {
-    return (window.WEDDING_GUEST && window.WEDDING_GUEST.token()) || "";
+    if (window.WEDDING_GUEST && window.WEDDING_GUEST.token) {
+      return window.WEDDING_GUEST.token() || "";
+    }
+    var params = new URLSearchParams(window.location.search);
+    return (params.get("g") || params.get("token") || "").trim();
   }
 
   function guestLookupUrl(token, page) {
@@ -282,34 +286,70 @@
     });
   }
 
+  function withTimeout(promise, ms) {
+    return new Promise(function (resolve, reject) {
+      var timer = setTimeout(function () {
+        reject(new Error("timeout"));
+      }, ms);
+      promise.then(
+        function (value) {
+          clearTimeout(timer);
+          resolve(value);
+        },
+        function (err) {
+          clearTimeout(timer);
+          reject(err);
+        }
+      );
+    });
+  }
+
   function fetchGuest(token) {
     var url = guestLookupUrl(token, "rsvp");
-
-    return fetch(url)
-      .then(function (res) {
-        return res.json();
-      })
-      .catch(function () {
-        return jsonpGuest(url);
-      });
+    return jsonpGuest(url).catch(function () {
+      return withTimeout(
+        fetch(url, { credentials: "omit" }).then(function (res) {
+          if (!res.ok) throw new Error("bad status");
+          return res.json();
+        }),
+        4000
+      );
+    });
   }
 
   function jsonpGuest(url) {
     return new Promise(function (resolve, reject) {
       var name = "weddingRsvp" + Date.now();
       var script = document.createElement("script");
-      window[name] = function (data) {
+      var done = false;
+      var timer = setTimeout(function () {
+        finish(function () {
+          reject(new Error("timeout"));
+        });
+      }, 8000);
+
+      function finish(fn) {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
         delete window[name];
-        script.remove();
-        resolve(data);
+        if (script.parentNode) script.parentNode.removeChild(script);
+        fn();
+      }
+
+      window[name] = function (data) {
+        finish(function () {
+          resolve(data);
+        });
       };
       script.onerror = function () {
-        delete window[name];
-        script.remove();
-        reject(new Error("Could not load guest"));
+        finish(function () {
+          reject(new Error("Could not load guest"));
+        });
       };
-      script.src = url + "&callback=" + name;
-      document.body.appendChild(script);
+      script.async = true;
+      script.src = url + "&callback=" + encodeURIComponent(name);
+      (document.head || document.body).appendChild(script);
     });
   }
 
@@ -456,7 +496,10 @@
       .catch(function () {
         form.hidden = true;
         if (locked) locked.hidden = false;
-        showAlert("error", "We could not open that invitation. Please try again, or email us.");
+        showAlert(
+          "error",
+          "We could not open that invitation. Try Safari or Chrome — in-app browsers and content blockers sometimes block it — or email us."
+        );
       });
 
     form.addEventListener("submit", function (e) {
