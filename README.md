@@ -64,7 +64,7 @@ Hero frames and the photo strip both read from the `photos` list in `js/config.j
 | --- | --- |
 | `img/photos/01.jpg`–`04.jpg` | Hero photos from the invitation card. Overwrite these anytime |
 | `img/photos/05.jpg`–`08.jpg` | Labelled placeholders ready to use |
-| `img/invite.jpg` | Social-share image |
+| `img/og.jpg` | Social-share / link-preview image |
 
 To add or replace photos:
 
@@ -202,5 +202,6 @@ js/config.js        All guest-facing copy and the Sheets URL
 js/app.js           Renders each page, calendar links, RSVP submit
 sheets/Code.gs      Paste this into Apps Script
 img/photos/         Replace these JPEGs
-img/invite.jpg
+img/og.jpg            Link preview image
+img/apple-touch.png   Home-screen icon
 ```
