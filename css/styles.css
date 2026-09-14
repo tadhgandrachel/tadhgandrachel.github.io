@@ -79,6 +79,7 @@ h3 {
 
 .masthead {
   position: relative;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -582,6 +583,7 @@ main {
   .site-nav {
     display: none;
     position: absolute;
+    z-index: 11;
     top: 4.2rem;
     left: 0;
     right: 0;
