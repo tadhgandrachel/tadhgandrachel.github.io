@@ -68,7 +68,9 @@ function doGet(e) {
   }
 
   var row = found.row;
-  recordOpen_(found, params.page);
+  if (String(params.lite || "") !== "1") {
+    recordOpen_(found, params.page);
+  }
   return respond_(params.callback, {
     result: "success",
     name: row.Name || "",

@@ -266,24 +266,30 @@
     return (params.get("g") || params.get("token") || "").trim();
   }
 
-  function guestLookupUrl(token, page) {
+  function guestLookupUrl(token, page, lite) {
     var base = W.rsvp.googleScriptUrl;
     var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "g=" + encodeURIComponent(token);
     if (page) url += "&page=" + encodeURIComponent(page);
+    if (lite) url += "&lite=1";
+    url += "&_=" + Date.now();
     return url;
   }
 
-  function trackVisit() {
+  function logVisit(page) {
     var token = guestToken();
     if (!token || !W.rsvp.googleScriptUrl) return;
-    var page = document.body.getAttribute("data-page") || "";
-    if (page === "rsvp") return;
     var url = guestLookupUrl(token, page);
     fetch(url, { method: "GET", mode: "no-cors", keepalive: true, credentials: "omit" }).catch(function () {
       var img = document.createElement("img");
       img.alt = "";
       img.src = url;
     });
+  }
+
+  function trackVisit() {
+    var page = document.body.getAttribute("data-page") || "";
+    if (page === "rsvp") return;
+    logVisit(page);
   }
 
   function withTimeout(promise, ms) {
@@ -304,29 +310,72 @@
     });
   }
 
-  function fetchGuest(token) {
-    var url = guestLookupUrl(token, "rsvp");
-    return jsonpGuest(url).catch(function () {
-      return withTimeout(
-        fetch(url, { credentials: "omit" }).then(function (res) {
-          if (!res.ok) throw new Error("bad status");
-          return res.json();
-        }),
-        4000
-      );
+  function parseGuestResponse(text) {
+    var raw = String(text || "").replace(/^\uFEFF/, "").trim();
+    if (!raw) throw new Error("empty");
+    if (raw.charAt(0) === "{") return JSON.parse(raw);
+    var start = raw.indexOf("(");
+    var end = raw.lastIndexOf(")");
+    if (start >= 0 && end > start) return JSON.parse(raw.slice(start + 1, end));
+    return JSON.parse(raw);
+  }
+
+  function fetchJsonGuest(url) {
+    return fetch(url, {
+      method: "GET",
+      credentials: "omit",
+      cache: "no-store",
+      redirect: "follow",
+    }).then(function (res) {
+      return res.text();
+    }).then(parseGuestResponse);
+  }
+
+  function firstGuestResponse(promises) {
+    return new Promise(function (resolve, reject) {
+      var left = promises.length;
+      var lastErr;
+      var done = false;
+      promises.forEach(function (promise) {
+        promise.then(
+          function (value) {
+            if (done || !value || !value.result) {
+              lastErr = lastErr || new Error("bad payload");
+              left -= 1;
+              if (!done && left === 0) reject(lastErr);
+              return;
+            }
+            done = true;
+            resolve(value);
+          },
+          function (err) {
+            lastErr = err;
+            left -= 1;
+            if (!done && left === 0) reject(lastErr);
+          }
+        );
+      });
     });
+  }
+
+  function fetchGuest(token) {
+    var url = guestLookupUrl(token, "rsvp", true);
+    return firstGuestResponse([
+      withTimeout(fetchJsonGuest(url), 20000),
+      jsonpGuest(url),
+    ]);
   }
 
   function jsonpGuest(url) {
     return new Promise(function (resolve, reject) {
-      var name = "weddingRsvp" + Date.now();
+      var name = "weddingRsvp" + String(Date.now());
       var script = document.createElement("script");
       var done = false;
       var timer = setTimeout(function () {
         finish(function () {
           reject(new Error("timeout"));
         });
-      }, 8000);
+      }, 20000);
 
       function finish(fn) {
         if (done) return;
@@ -348,8 +397,8 @@
         });
       };
       script.async = true;
-      script.src = url + "&callback=" + encodeURIComponent(name);
-      (document.head || document.body).appendChild(script);
+      script.src = url + "&callback=" + name;
+      (document.body || document.head).appendChild(script);
     });
   }
 
@@ -487,6 +536,7 @@
         }
         var alertBox = $("[data-alert]");
         if (alertBox) alertBox.hidden = true;
+        logVisit("rsvp");
         if (guest.alreadyReplied) {
           showReceipt(guest);
           return;
@@ -498,7 +548,7 @@
         if (locked) locked.hidden = false;
         showAlert(
           "error",
-          "We could not open that invitation. Try Safari or Chrome — in-app browsers and content blockers sometimes block it — or email us."
+          "We could not open that invitation. Please try again, or email us."
         );
       });
 
