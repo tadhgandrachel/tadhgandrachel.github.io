@@ -606,34 +606,9 @@ main {
     padding-top: 0.6rem;
   }
 
-  .film-strip--vertical {
-    flex-direction: row;
-    overflow-x: auto;
-    padding: 1.1rem 1.5rem;
-    scroll-snap-type: x mandatory;
-  }
-
-  .film-strip--vertical figure {
-    flex: 0 0 42vw;
-    scroll-snap-align: start;
-  }
-
-  .film-strip--vertical::before,
-  .film-strip--vertical::after {
-    top: 0.32rem;
-    bottom: auto;
-    left: 0.7rem;
-    right: 0.7rem;
-    width: auto;
-    height: 0.55rem;
-    background-image: radial-gradient(circle, var(--paper) 2.7px, transparent 2.9px);
-    background-size: 1.15rem 100%;
-    background-repeat: repeat-x;
-  }
-
-  .film-strip--vertical::after {
-    top: auto;
-    bottom: 0.32rem;
+  .hero .film-strip--vertical {
+    max-width: 230px;
+    margin-inline: auto;
   }
 
   .facts,
