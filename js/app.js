@@ -72,6 +72,7 @@
     renderParagraphs("[data-stay-body]", W.stay && W.stay.paragraphs);
     setText("[data-rsvp-deadline]", W.rsvp.deadline);
     setText("[data-contact]", W.contactEmail);
+    setText("[data-site-version]", W.siteVersion ? "v" + W.siteVersion : "");
     setHref("[data-contact-link]", "mailto:" + W.contactEmail);
     setHref("[data-maps]", W.venue.mapsUrl);
     setAttr("[data-maps-embed]", "src", W.venue.mapsEmbedUrl);

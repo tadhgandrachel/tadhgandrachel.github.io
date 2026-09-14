@@ -583,6 +583,13 @@ main {
   color: inherit;
 }
 
+.site-version {
+  margin-top: 0.55rem;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+
 @media (max-width: 760px) {
   .nav-toggle {
     display: grid;

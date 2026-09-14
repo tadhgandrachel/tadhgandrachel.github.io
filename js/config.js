@@ -111,4 +111,7 @@ window.WEDDING = {
   },
 
   contactEmail: "tadhgok13@gmail.com",
+
+  // Shown in the footer so you can tell a phone has the latest deploy
+  siteVersion: "17",
 };
