@@ -401,7 +401,7 @@ main {
   max-width: 36rem;
 }
 
-.rsvp-form label,
+.rsvp-form label:not(.choice-opt),
 .rsvp-form .full {
   display: flex;
   flex-direction: column;
@@ -430,9 +430,10 @@ main {
   font-size: 1.7rem;
 }
 
-.rsvp-form input,
-.rsvp-form select,
+.rsvp-form input[type="email"],
+.rsvp-form input[type="text"],
 .rsvp-form textarea {
+  appearance: none;
   border: 0;
   border-bottom: 1px solid var(--ink);
   border-radius: 0;
@@ -444,11 +445,59 @@ main {
   width: 100%;
 }
 
-.rsvp-form input:focus,
-.rsvp-form select:focus,
+.rsvp-form input[type="email"]:focus,
+.rsvp-form input[type="text"]:focus,
 .rsvp-form textarea:focus {
   outline: none;
   border-bottom-color: var(--red);
+}
+
+.rsvp-form input::placeholder,
+.rsvp-form textarea::placeholder {
+  color: var(--ink-soft);
+  font-family: inherit;
+  opacity: 1;
+}
+
+.choice {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.choice legend {
+  padding: 0;
+  margin: 0 0 0.2rem;
+}
+
+.choice-opt {
+  display: inline-block;
+  margin-right: 1.2rem;
+}
+
+.choice-opt input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.choice-opt span {
+  color: var(--ink);
+  font-size: 1.45rem;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.choice-opt input:checked + span,
+.choice-opt input:focus-visible + span {
+  color: var(--red);
 }
 
 .rsvp-form button {

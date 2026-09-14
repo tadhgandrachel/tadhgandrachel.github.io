@@ -401,11 +401,11 @@
           nameInput.required = !twoKnown;
         }
         if (nameFieldWrap) nameFieldWrap.hidden = twoKnown;
-        var plusAttending = $("[data-plus-one-attending]");
-        if (plusAttending) {
-          plusAttending.required = true;
-          if (guest.plusOneAttending) plusAttending.value = guest.plusOneAttending;
-        }
+        var plusRadios = form.querySelectorAll('input[name="plus_one_attending"]');
+        plusRadios.forEach(function (radio) {
+          radio.required = true;
+        });
+        if (guest.plusOneAttending) form.plus_one_attending.value = guest.plusOneAttending;
       }
     }
 

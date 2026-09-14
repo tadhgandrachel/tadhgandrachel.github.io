@@ -51,7 +51,7 @@ window.WEDDING = {
         {
           time: "3pm",
           title: "The Boathouse, Putney",
-          detail: "Please come. This is the one we do not want you to miss. The Boathouse is our favourite Putney spot — a roof terrace with brilliant views of the Thames. Come from 3pm until close for a loose, sunny, stay-as-long-as-you-like afternoon. 32 Brewhouse Lane, Putney, SW15 2JX.",
+          detail: "The Boathouse is our favourite Putney spot — a roof terrace with brilliant views of the Thames. Come from 3pm until close for a relaxed, sunny, day 2 party. 32 Brewhouse Lane, Putney, SW15 2JX.",
         },
       ],
     },

@@ -53,14 +53,17 @@
 
       <div class="guest-block full" data-guest-one>
         <h2 class="guest-block-name" data-guest-one-name></h2>
-        <label>
-          Coming?
-          <select name="attending" required>
-            <option value="" selected disabled>Please choose</option>
-            <option value="Yes">Yes</option>
-            <option value="No">Sorry, no</option>
-          </select>
-        </label>
+        <fieldset class="choice">
+          <legend>Coming?</legend>
+          <label class="choice-opt">
+            <input type="radio" name="attending" value="Yes" required>
+            <span>Yes</span>
+          </label>
+          <label class="choice-opt">
+            <input type="radio" name="attending" value="No">
+            <span>Sorry, no</span>
+          </label>
+        </fieldset>
       </div>
 
       <div class="guest-block full" data-guest-two hidden>
@@ -69,14 +72,17 @@
           Name
           <input type="text" name="plus_one_name" data-plus-one-name>
         </label>
-        <label>
-          Coming?
-          <select name="plus_one_attending" data-plus-one-attending>
-            <option value="" selected disabled>Please choose</option>
-            <option value="Yes">Yes</option>
-            <option value="No">Sorry, no</option>
-          </select>
-        </label>
+        <fieldset class="choice">
+          <legend>Coming?</legend>
+          <label class="choice-opt">
+            <input type="radio" name="plus_one_attending" value="Yes" data-plus-one-attending>
+            <span>Yes</span>
+          </label>
+          <label class="choice-opt">
+            <input type="radio" name="plus_one_attending" value="No">
+            <span>Sorry, no</span>
+          </label>
+        </fieldset>
       </div>
 
       <label class="full">
