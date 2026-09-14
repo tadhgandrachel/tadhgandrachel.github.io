@@ -26,17 +26,17 @@ window.WEDDING = {
     address: "Cinder Hill, Sharpthorne, West Sussex, RH19 4HY",
     mapsUrl: "https://maps.google.com/?q=The+Ravenswood+Cinder+Hill+Sharpthorne+RH19+4HY",
     mapsEmbedUrl: "https://maps.google.com/maps?q=The+Ravenswood+Cinder+Hill+Sharpthorne+RH19+4HY&output=embed",
-    notes: "Please RSVP if you can come.",
+    notes: "Then Saturday at The Boathouse, Putney. Please RSVP — we want you at both.",
   },
 
   story: {
     heading: "The day",
-    body: "You are invited to celebrate with us at The Ravenswood, a 15th-century manor on the edge of the Ashdown Forest. Details are on this page — please RSVP so we can plan for you.",
+    body: "We cannot wait to marry at The Ravenswood — a 15th-century manor on the edge of the Ashdown Forest — and then keep the party going on Saturday. Friday is the big day. Saturday is Day 2: drinks on the roof terrace at The Boathouse in Putney, looking out over the river. Please come to both if you can. RSVP so we can plan for you.",
   },
 
   itinerary: [
     {
-      heading: "Friday 9 April",
+      heading: "Friday 9 April — the wedding",
       items: [
         { time: "2pm", title: "Ceremony", detail: "Add the ceremony time and any notes for guests." },
         { time: "3pm", title: "Drinks", detail: "Add where drinks will be served." },
@@ -45,13 +45,13 @@ window.WEDDING = {
       ],
     },
     {
-      heading: "Saturday 10 April",
+      heading: "Saturday 10 April — Day 2",
       mapsUrl: "https://maps.google.com/?q=The+Boathouse+32+Brewhouse+Lane+Putney+SW15+2JX",
       items: [
         {
           time: "3pm",
           title: "The Boathouse, Putney",
-          detail: "Our favourite local London spot, on the river. Come from 3pm until close. 32 Brewhouse Lane, Putney, SW15 2JX.",
+          detail: "Please come. This is the one we do not want you to miss. The Boathouse is our favourite Putney spot — a roof terrace with brilliant views of the Thames. Come from 3pm until close for a loose, sunny, stay-as-long-as-you-like afternoon. 32 Brewhouse Lane, Putney, SW15 2JX.",
         },
       ],
     },
@@ -65,7 +65,7 @@ window.WEDDING = {
   travel: {
     heading: "Getting to Putney",
     paragraphs: [
-      "We are not expecting anyone to travel back to Putney on Friday night — stay local if you can, and come into London on Saturday.",
+      "Please do not miss Saturday. Stay local on Friday night if you can, then come into London for Day 2 — roof terrace at The Boathouse, great views of the river, the lot.",
       "The easiest way is a taxi to East Grinstead, then the train to Clapham Junction and a change for Putney. East Grinstead is about 10 minutes from The Ravenswood. Haywards Heath is a little further by taxi and has more frequent trains.",
       "A taxi or Uber all the way takes about an hour to an hour and a half, depending on traffic — worth it if you are sharing.",
     ],
@@ -73,13 +73,13 @@ window.WEDDING = {
 
   sunday: {
     heading: "Sunday 11 April",
-    body: "If you are sticking around, Putney hosts the Oxford and Cambridge Boat Race on Sunday — a good reason to linger by the river.",
+    body: "If you are still standing after Friday and a big Saturday on the terrace, Putney hosts the Oxford and Cambridge Boat Race on Sunday — a perfect excuse to linger by the river.",
   },
 
   flights: {
     heading: "Flights from Dublin",
     paragraphs: [
-      "If you are flying from Dublin, we suggest an early Friday morning arrival into Gatwick, coming home Sunday afternoon. That gets you here in time for the day, and leaves room for the Boat Race on Sunday if you want it.",
+      "If you are flying from Dublin, we suggest an early Friday morning arrival into Gatwick, coming home Sunday afternoon. That gets you here for the wedding, Saturday at The Boathouse, and the Boat Race on Sunday if you want it.",
     ],
     origin: "DUB",
     destination: "LGW",
