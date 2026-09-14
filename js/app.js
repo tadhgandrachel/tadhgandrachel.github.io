@@ -324,6 +324,38 @@
     return v === "yes" || v === "y" || v === "true" || v === "1";
   }
 
+  function splitCoupleName(name) {
+    var parts = String(name || "").trim().split(/\s+(?:&|and)\s+/i);
+    if (parts.length === 2 && parts[0].trim() && parts[1].trim()) {
+      return [parts[0].trim(), parts[1].trim()];
+    }
+    return null;
+  }
+
+  function namesOverlap(a, b) {
+    var x = String(a || "").trim().toLowerCase();
+    var y = String(b || "").trim().toLowerCase();
+    if (!x || !y) return false;
+    return x === y || y.indexOf(x) !== -1 || x.indexOf(y) !== -1;
+  }
+
+  function partyFromGuest(guest) {
+    var household = String(guest.name || "").trim();
+    var plus = String(guest.guestTwoName || guest.plusOneNameReply || guest.plusOneName || "").trim();
+    var one = String(guest.guestOneName || "").trim();
+    var two = String(guest.guestTwoName || "").trim();
+    if (one && two) return { one: one, two: two };
+    var split = splitCoupleName(household);
+    if (plus) {
+      if (split && namesOverlap(split[1], plus)) {
+        return { one: split[0], two: plus };
+      }
+      return { one: household, two: plus };
+    }
+    if (split) return { one: split[0], two: split[1] };
+    return { one: household, two: "" };
+  }
+
   function showReceipt(guest) {
     var form = $("#rsvp-form");
     var receipt = $("[data-receipt]");
@@ -332,15 +364,17 @@
     if (locked) locked.hidden = true;
     if (!receipt) return;
 
-    setText("[data-receipt-name]", guest.name || "");
+    var party = partyFromGuest(guest);
+    setText("[data-receipt-name]", party.two ? party.one + " and " + party.two : party.one);
+    setText("[data-receipt-one-name]", party.one || "You");
     setText("[data-receipt-attending]", yesNoLabel(guest.attending));
 
     var plusWrap = $("[data-receipt-plus-wrap]");
     if (plusWrap) {
-      plusWrap.hidden = !guest.plusOneAllowed;
-      if (guest.plusOneAllowed) {
-        var plusName = guest.plusOneNameReply || guest.plusOneName || "Guest";
-        setText("[data-receipt-plus-name]", plusName);
+      var twoName = party.two || guest.plusOneNameReply || guest.plusOneName;
+      plusWrap.hidden = !twoName && !guest.plusOneAllowed;
+      if (!plusWrap.hidden) {
+        setText("[data-receipt-plus-name]", twoName || "Guest");
         setText("[data-receipt-plus-attending]", yesNoLabel(guest.plusOneAttending));
       }
     }
@@ -367,22 +401,31 @@
     var tokenField = $("[data-guest-token]");
     var nameField = $("[data-guest-name-input]");
     var emailField = $("[data-guest-email]");
+    var party = partyFromGuest(guest);
     if (tokenField) tokenField.value = token;
-    if (nameField) nameField.value = guest.name || "";
-    setText("[data-guest-name]", guest.name || "");
+    if (nameField) nameField.value = guest.name || party.one;
+    setText("[data-guest-name]", party.two ? party.one + " and " + party.two : party.one);
+    setText("[data-guest-one-name]", party.one);
     if (emailField && guest.email) emailField.value = guest.email;
     if (guest.diet) form.diet.value = guest.diet;
     if (guest.message) form.message.value = guest.message;
     if (guest.attending) form.attending.value = guest.attending;
 
-    var plus = $("[data-plus-one]");
-    if (plus) {
-      plus.hidden = !guest.plusOneAllowed;
-      if (guest.plusOneAllowed) {
-        var label = guest.plusOneName || "your guest";
-        setText("[data-plus-one-label]", label);
+    var twoWrap = $("[data-guest-two]");
+    var twoKnown = Boolean(party.two);
+    var twoAllowed = Boolean(guest.plusOneAllowed || twoKnown);
+    if (twoWrap) {
+      twoWrap.hidden = !twoAllowed;
+      if (twoAllowed) {
+        setText("[data-guest-two-name]", party.two || "Guest");
         var nameInput = $("[data-plus-one-name]");
-        if (nameInput) nameInput.value = guest.plusOneNameReply || guest.plusOneName || "";
+        var nameFieldWrap = $("[data-guest-two-name-field]");
+        if (nameInput) {
+          nameInput.value = party.two;
+          nameInput.type = twoKnown ? "hidden" : "text";
+          nameInput.required = !twoKnown;
+        }
+        if (nameFieldWrap) nameFieldWrap.hidden = twoKnown;
         var plusAttending = $("[data-plus-one-attending]");
         if (plusAttending) {
           plusAttending.required = true;
@@ -457,13 +500,17 @@
       function succeed() {
         var alertBox = $("[data-alert]");
         if (alertBox) alertBox.hidden = true;
-        var plusBlock = $("[data-plus-one]");
+        var twoWrap = $("[data-guest-two]");
+        var twoName = (form.plus_one_name && form.plus_one_name.value) || "";
+        var oneName = ($("[data-guest-one-name]") && $("[data-guest-one-name]").textContent) || form.name.value;
         showReceipt({
           name: form.name.value,
+          guestOneName: oneName,
+          guestTwoName: twoName,
           attending: form.attending.value,
-          plusOneAllowed: plusBlock ? !plusBlock.hidden : false,
-          plusOneName: (form.plus_one_name && form.plus_one_name.value) || "",
-          plusOneNameReply: (form.plus_one_name && form.plus_one_name.value) || "",
+          plusOneAllowed: twoWrap ? !twoWrap.hidden : false,
+          plusOneName: twoName,
+          plusOneNameReply: twoName,
           plusOneAttending: (form.plus_one_attending && form.plus_one_attending.value) || "",
           email: form.email.value,
           diet: form.diet.value,

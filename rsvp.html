@@ -44,33 +44,38 @@
       <input type="hidden" name="token" data-guest-token>
       <input type="hidden" name="name" data-guest-name-input>
 
-      <p class="guest-hello full">Hello, <span data-guest-name></span>.</p>
+      <p class="guest-hello full">Hello, <span data-guest-name></span></p>
 
-      <label>
+      <label class="full">
         Email
         <input type="email" name="email" autocomplete="email" data-guest-email>
       </label>
-      <label>
-        Will you be there?
-        <select name="attending" required>
-          <option value="" selected disabled>Please choose</option>
-          <option value="Yes">Yes, I will be there</option>
-          <option value="No">Sorry, I cannot make it</option>
-        </select>
-      </label>
 
-      <div class="full plus-one" data-plus-one hidden>
+      <div class="guest-block full" data-guest-one>
+        <h2 class="guest-block-name" data-guest-one-name></h2>
         <label>
-          Will <span data-plus-one-label>your guest</span> join you?
+          Coming?
+          <select name="attending" required>
+            <option value="" selected disabled>Please choose</option>
+            <option value="Yes">Yes</option>
+            <option value="No">Sorry, no</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="guest-block full" data-guest-two hidden>
+        <h2 class="guest-block-name" data-guest-two-name>Guest</h2>
+        <label data-guest-two-name-field hidden>
+          Name
+          <input type="text" name="plus_one_name" data-plus-one-name>
+        </label>
+        <label>
+          Coming?
           <select name="plus_one_attending" data-plus-one-attending>
             <option value="" selected disabled>Please choose</option>
             <option value="Yes">Yes</option>
-            <option value="No">No</option>
+            <option value="No">Sorry, no</option>
           </select>
-        </label>
-        <label data-plus-one-name-field>
-          Guest's name
-          <input type="text" name="plus_one_name" data-plus-one-name>
         </label>
       </div>
 
@@ -91,12 +96,12 @@
 
       <dl class="receipt-list">
         <div>
-          <dt>You</dt>
+          <dt data-receipt-one-name>You</dt>
           <dd data-receipt-attending></dd>
         </div>
         <div data-receipt-plus-wrap hidden>
-          <dt>Guest</dt>
-          <dd><span data-receipt-plus-name></span> — <span data-receipt-plus-attending></span></dd>
+          <dt data-receipt-plus-name>Guest</dt>
+          <dd data-receipt-plus-attending></dd>
         </div>
         <div data-receipt-email-wrap hidden>
           <dt>Email</dt>

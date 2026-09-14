@@ -96,11 +96,11 @@ That link opens the invitation home page. The token stays with them as they brow
 | Token | Name | Plus one allowed | Plus one name | Email | Link | … |
 | --- | --- | --- | --- | --- | --- | --- |
 | *(leave blank)* | Sam O'Neill | No | | sam@example.com | *(leave blank)* | |
-| *(leave blank)* | Alex & Jo | Yes | Jo Murphy | alex@example.com | *(leave blank)* | |
+| *(leave blank)* | John Doe and Mary Bloggs | | Mary Bloggs | john@example.com | *(leave blank)* | |
 
-- **Name** — the person (or household) the invite is for. This is locked on the form.
-- **Plus one allowed** — `Yes` if they may bring a guest, `No` if not.
-- **Plus one name** — optional. Fill this if you already know who the +1 is; they will see that name. Leave blank to let them type a name.
+- **Name** — the person, or both people (`John Doe and Mary Bloggs` or `John Doe & Mary Bloggs`). Couples get two equal RSVP sections, not a main guest plus a +1.
+- **Plus one name** — the second person if you did not put both names in **Name**. Either person can fill the form.
+- **Plus one allowed** — `Yes` only if they may bring someone whose name you do not know yet.
 - **Email** — optional. Prefills the form.
 
 The script fills **Token** and **Link**, and later writes the RSVP answers into the remaining columns on **that same row**. It does not add a new row.
