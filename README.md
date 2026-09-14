@@ -40,8 +40,11 @@ Everything guests see is driven by **`js/config.js`**. Change the values, save, 
 | `venue.mapsUrl` | Google Maps link |
 | `venue.notes` | Small line under the hero (`Please RSVP if you can come.`) |
 | `story.heading` / `story.body` | The short “about the day” paragraph |
-| `schedule` | Running order. Keep `time: "TBC"` until you know |
-| `stay.heading` / `stay.body` | Hotels / on-site rooms |
+| `itinerary` | Friday and Saturday running order. Keep Friday times as `TBC` until you know |
+| `travel.heading` / `travel.paragraphs` | Trains and taxis from The Ravenswood to Putney |
+| `flights` | Getting there copy and the Dublin–Gatwick Skyscanner dates |
+| `sunday.heading` / `sunday.body` | Boat Race note for anyone staying on |
+| `stay.heading` / `stay.paragraphs` | Where to stay, Gatwick, nearby towns |
 | `photos` | File paths and alt text. Add or remove entries as needed |
 | `rsvp.deadline` | Reply-by date shown above the form |
 | `rsvp.googleScriptUrl` | Web App URL from Apps Script (section 3) |

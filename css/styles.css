@@ -275,6 +275,24 @@ main {
   margin: 0 0 2.2rem;
 }
 
+.skyscanner-wrap {
+  max-width: 36rem;
+  margin: 0 0 1rem;
+  min-height: 16rem;
+}
+
+[data-stay-body] .lede,
+[data-travel-body] .lede,
+[data-flights-body] .lede {
+  margin-bottom: 1rem;
+}
+
+[data-stay-body] .lede:last-child,
+[data-travel-body] .lede:last-child,
+[data-flights-body] .lede:last-child {
+  margin-bottom: 2.2rem;
+}
+
 .facts {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -297,6 +315,10 @@ main {
 }
 
 .subhead {
+  margin-top: 2rem;
+}
+
+[data-itinerary] .subhead:first-child {
   margin-top: 2rem;
 }
 

@@ -15,6 +15,18 @@
     });
   }
 
+  function renderParagraphs(sel, paragraphs) {
+    var wrap = $(sel);
+    if (!wrap || !paragraphs) return;
+    wrap.innerHTML = "";
+    paragraphs.forEach(function (text) {
+      var p = document.createElement("p");
+      p.className = "lede";
+      p.textContent = text;
+      wrap.appendChild(p);
+    });
+  }
+
   function setHref(sel, value) {
     var el = $(sel);
     if (el && value) el.setAttribute("href", value);
@@ -51,11 +63,18 @@
     setText("[data-story-heading]", W.story.heading);
     setText("[data-story-body]", W.story.body);
     setText("[data-stay-heading]", W.stay.heading);
-    setText("[data-stay-body]", W.stay.body);
+    renderParagraphs("[data-stay-body]", W.stay && W.stay.paragraphs);
     setText("[data-rsvp-deadline]", W.rsvp.deadline);
     setText("[data-contact]", W.contactEmail);
     setHref("[data-contact-link]", "mailto:" + W.contactEmail);
     setHref("[data-maps]", W.venue.mapsUrl);
+    setText("[data-travel-heading]", W.travel && W.travel.heading);
+    renderParagraphs("[data-travel-body]", W.travel && W.travel.paragraphs);
+    setText("[data-flights-heading]", W.flights && W.flights.heading);
+    renderParagraphs("[data-flights-body]", W.flights && W.flights.paragraphs);
+    setHref("[data-flights-search]", W.flights && W.flights.searchUrl);
+    setText("[data-sunday-heading]", W.sunday && W.sunday.heading);
+    setText("[data-sunday-body]", W.sunday && W.sunday.body);
 
     var headline = $("[data-headline]");
     if (headline) {
@@ -86,20 +105,43 @@
       });
     }
 
-    var schedule = $("[data-schedule]");
-    if (schedule) {
-      schedule.innerHTML = "";
-      W.schedule.forEach(function (item) {
-        var li = document.createElement("li");
-        li.innerHTML =
-          '<span class="when">' +
-          escapeHtml(item.time) +
-          '</span><div><strong>' +
-          escapeHtml(item.title) +
-          "</strong><p>" +
-          escapeHtml(item.detail) +
-          "</p></div>";
-        schedule.appendChild(li);
+    var days = $("[data-itinerary]");
+    if (days && W.itinerary) {
+      days.innerHTML = "";
+      W.itinerary.forEach(function (day) {
+        var heading = document.createElement("h2");
+        heading.className = "subhead";
+        heading.textContent = day.heading;
+        days.appendChild(heading);
+
+        var list = document.createElement("ol");
+        list.className = "schedule";
+        (day.items || []).forEach(function (item) {
+          var li = document.createElement("li");
+          li.innerHTML =
+            '<span class="when">' +
+            escapeHtml(item.time) +
+            '</span><div><strong>' +
+            escapeHtml(item.title) +
+            "</strong><p>" +
+            escapeHtml(item.detail) +
+            "</p></div>";
+          list.appendChild(li);
+        });
+        days.appendChild(list);
+
+        if (day.mapsUrl) {
+          var mapLine = document.createElement("p");
+          mapLine.className = "lede";
+          var mapLink = document.createElement("a");
+          mapLink.className = "text-link";
+          mapLink.href = day.mapsUrl;
+          mapLink.target = "_blank";
+          mapLink.rel = "noreferrer";
+          mapLink.textContent = "Open in maps";
+          mapLine.appendChild(mapLink);
+          days.appendChild(mapLine);
+        }
       });
     }
 
