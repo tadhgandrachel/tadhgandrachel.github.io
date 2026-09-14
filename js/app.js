@@ -258,76 +258,8 @@
     box.textContent = message;
   }
 
-  var TOKEN_KEY = "weddingGuestToken";
-
-  function readStoredToken() {
-    try {
-      return (sessionStorage.getItem(TOKEN_KEY) || "").trim();
-    } catch (e) {
-      return "";
-    }
-  }
-
-  function storeToken(token) {
-    if (!token) return;
-    try {
-      sessionStorage.setItem(TOKEN_KEY, token);
-    } catch (e) {}
-  }
-
   function guestToken() {
-    var params = new URLSearchParams(window.location.search);
-    var fromUrl = (params.get("g") || params.get("token") || "").trim();
-    if (fromUrl) {
-      storeToken(fromUrl);
-      return fromUrl;
-    }
-    return readStoredToken();
-  }
-
-  function isSitePage(href) {
-    if (!href) return false;
-    var value = href.trim();
-    if (value.charAt(0) === "#") return false;
-    if (/^(mailto:|tel:|javascript:)/i.test(value)) return false;
-    try {
-      var url = new URL(value, window.location.href);
-      if (url.origin !== window.location.origin) return false;
-      return /\.html$/i.test(url.pathname) || /\/$/.test(url.pathname);
-    } catch (e) {
-      return false;
-    }
-  }
-
-  function withGuestToken(href, token) {
-    var hashAt = href.indexOf("#");
-    var hash = hashAt >= 0 ? href.slice(hashAt) : "";
-    var base = hashAt >= 0 ? href.slice(0, hashAt) : href;
-    var queryAt = base.indexOf("?");
-    var path = queryAt >= 0 ? base.slice(0, queryAt) : base;
-    var params = new URLSearchParams(queryAt >= 0 ? base.slice(queryAt + 1) : "");
-    if (params.get("g") || params.get("token")) return href;
-    params.set("g", token);
-    return path + "?" + params.toString() + hash;
-  }
-
-  function carryGuestToken() {
-    var token = guestToken();
-    if (!token) return;
-
-    if (document.body.getAttribute("data-page") === "rsvp") {
-      var params = new URLSearchParams(window.location.search);
-      if (!params.get("g") && !params.get("token")) {
-        params.set("g", token);
-        history.replaceState(null, "", window.location.pathname + "?" + params.toString() + window.location.hash);
-      }
-    }
-
-    document.querySelectorAll("a[href]").forEach(function (link) {
-      var href = link.getAttribute("href");
-      if (!isSitePage(href)) return;
-      link.setAttribute("href", withGuestToken(href, token));
-    });
+    return (window.WEDDING_GUEST && window.WEDDING_GUEST.token()) || "";
   }
 
   function guestLookupUrl(token, page) {
@@ -556,7 +488,7 @@
   }
 
   render();
-  carryGuestToken();
+  if (window.WEDDING_GUEST && window.WEDDING_GUEST.stamp) window.WEDDING_GUEST.stamp();
   setupNav();
   setupRsvp();
   trackVisit();
