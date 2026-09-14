@@ -103,11 +103,6 @@
       });
     }
 
-    var inviteWrap = $("[data-invite-field]");
-    if (inviteWrap) {
-      inviteWrap.hidden = !W.rsvp.inviteCode;
-    }
-
     renderCalendar();
   }
 
@@ -211,26 +206,176 @@
     box.textContent = message;
   }
 
+  function guestToken() {
+    var params = new URLSearchParams(window.location.search);
+    return (params.get("g") || params.get("token") || "").trim();
+  }
+
+  function fetchGuest(token) {
+    var base = W.rsvp.googleScriptUrl;
+    var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "g=" + encodeURIComponent(token);
+
+    return fetch(url)
+      .then(function (res) {
+        return res.json();
+      })
+      .catch(function () {
+        return jsonpGuest(url);
+      });
+  }
+
+  function jsonpGuest(url) {
+    return new Promise(function (resolve, reject) {
+      var name = "weddingRsvp" + Date.now();
+      var script = document.createElement("script");
+      window[name] = function (data) {
+        delete window[name];
+        script.remove();
+        resolve(data);
+      };
+      script.onerror = function () {
+        delete window[name];
+        script.remove();
+        reject(new Error("Could not load guest"));
+      };
+      script.src = url + "&callback=" + name;
+      document.body.appendChild(script);
+    });
+  }
+
+  function yesNoLabel(value) {
+    if (isYes(value)) return "Yes";
+    if (String(value || "").trim()) return "No";
+    return "—";
+  }
+
+  function isYes(value) {
+    var v = String(value || "").trim().toLowerCase();
+    return v === "yes" || v === "y" || v === "true" || v === "1";
+  }
+
+  function showReceipt(guest) {
+    var form = $("#rsvp-form");
+    var receipt = $("[data-receipt]");
+    var locked = $("[data-rsvp-locked]");
+    if (form) form.hidden = true;
+    if (locked) locked.hidden = true;
+    if (!receipt) return;
+
+    setText("[data-receipt-name]", guest.name || "");
+    setText("[data-receipt-attending]", yesNoLabel(guest.attending));
+
+    var plusWrap = $("[data-receipt-plus-wrap]");
+    if (plusWrap) {
+      plusWrap.hidden = !guest.plusOneAllowed;
+      if (guest.plusOneAllowed) {
+        var plusName = guest.plusOneNameReply || guest.plusOneName || "Guest";
+        setText("[data-receipt-plus-name]", plusName);
+        setText("[data-receipt-plus-attending]", yesNoLabel(guest.plusOneAttending));
+      }
+    }
+
+    function optional(wrapSel, valueSel, value) {
+      var wrap = $(wrapSel);
+      if (!wrap) return;
+      var has = Boolean(value && String(value).trim());
+      wrap.hidden = !has;
+      if (has) setText(valueSel, value);
+    }
+
+    optional("[data-receipt-email-wrap]", "[data-receipt-email]", guest.email);
+    optional("[data-receipt-diet-wrap]", "[data-receipt-diet]", guest.diet);
+    optional("[data-receipt-message-wrap]", "[data-receipt-message]", guest.message);
+
+    receipt.hidden = false;
+  }
+
+  function fillGuestForm(guest, token) {
+    var form = $("#rsvp-form");
+    if (!form) return;
+
+    var tokenField = $("[data-guest-token]");
+    var nameField = $("[data-guest-name-input]");
+    var emailField = $("[data-guest-email]");
+    if (tokenField) tokenField.value = token;
+    if (nameField) nameField.value = guest.name || "";
+    setText("[data-guest-name]", guest.name || "");
+    if (emailField && guest.email) emailField.value = guest.email;
+    if (guest.diet) form.diet.value = guest.diet;
+    if (guest.message) form.message.value = guest.message;
+    if (guest.attending) form.attending.value = guest.attending;
+
+    var plus = $("[data-plus-one]");
+    if (plus) {
+      plus.hidden = !guest.plusOneAllowed;
+      if (guest.plusOneAllowed) {
+        var label = guest.plusOneName || "your guest";
+        setText("[data-plus-one-label]", label);
+        var nameInput = $("[data-plus-one-name]");
+        if (nameInput) nameInput.value = guest.plusOneNameReply || guest.plusOneName || "";
+        var plusAttending = $("[data-plus-one-attending]");
+        if (plusAttending) {
+          plusAttending.required = true;
+          if (guest.plusOneAttending) plusAttending.value = guest.plusOneAttending;
+        }
+      }
+    }
+
+    form.hidden = false;
+    var locked = $("[data-rsvp-locked]");
+    if (locked) locked.hidden = true;
+  }
+
   function setupRsvp() {
     var form = $("#rsvp-form");
     if (!form) return;
 
+    var token = guestToken();
+    var locked = $("[data-rsvp-locked]");
+
+    if (!token) {
+      form.hidden = true;
+      if (locked) locked.hidden = false;
+      return;
+    }
+
+    if (!W.rsvp.googleScriptUrl) {
+      form.hidden = true;
+      showAlert(
+        "error",
+        "RSVPs are not connected yet. Add your Google Apps Script URL in js/config.js — see the README."
+      );
+      return;
+    }
+
+    showAlert("info", "Opening your invitation…");
+    fetchGuest(token)
+      .then(function (guest) {
+        if (!guest || guest.result !== "success") {
+          form.hidden = true;
+          if (locked) locked.hidden = false;
+          showAlert("error", (guest && guest.message) || "We could not find that invitation.");
+          return;
+        }
+        var alertBox = $("[data-alert]");
+        if (alertBox) alertBox.hidden = true;
+        if (guest.alreadyReplied) {
+          showReceipt(guest);
+          return;
+        }
+        fillGuestForm(guest, token);
+      })
+      .catch(function () {
+        form.hidden = true;
+        if (locked) locked.hidden = false;
+        showAlert("error", "We could not open that invitation. Please try again, or email us.");
+      });
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      if (W.rsvp.inviteCode) {
-        var code = (form.invite_code.value || "").trim();
-        if (code !== W.rsvp.inviteCode) {
-          showAlert("error", "That invite code does not match. Please check your invitation.");
-          return;
-        }
-      }
-
-      if (!W.rsvp.googleScriptUrl) {
-        showAlert(
-          "error",
-          "RSVPs are not connected yet. Add your Google Apps Script URL in js/config.js — see the README."
-        );
+      if (!form.token.value) {
+        showAlert("error", "Please use the personal RSVP link we sent you.");
         return;
       }
 
@@ -240,11 +385,20 @@
       showAlert("info", "Sending your RSVP…");
 
       function succeed() {
-        form.hidden = true;
-        var thanks = $("[data-thanks]");
-        if (thanks) thanks.hidden = false;
         var alertBox = $("[data-alert]");
         if (alertBox) alertBox.hidden = true;
+        var plusBlock = $("[data-plus-one]");
+        showReceipt({
+          name: form.name.value,
+          attending: form.attending.value,
+          plusOneAllowed: plusBlock ? !plusBlock.hidden : false,
+          plusOneName: (form.plus_one_name && form.plus_one_name.value) || "",
+          plusOneNameReply: (form.plus_one_name && form.plus_one_name.value) || "",
+          plusOneAttending: (form.plus_one_attending && form.plus_one_attending.value) || "",
+          email: form.email.value,
+          diet: form.diet.value,
+          message: form.message.value,
+        });
       }
 
       fetch(W.rsvp.googleScriptUrl, { method: "POST", body: data })

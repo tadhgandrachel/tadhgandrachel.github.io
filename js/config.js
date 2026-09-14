@@ -57,8 +57,6 @@ window.WEDDING = {
     deadline: "1 February 2027",
     // Paste the Web App URL from Apps Script after you deploy (README, step 3)
     googleScriptUrl: "",
-    // Optional. Leave blank to skip the invite-code check.
-    inviteCode: "",
   },
 
   contactEmail: "rachel.and.tadhg@example.com",

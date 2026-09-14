@@ -377,6 +377,17 @@ main {
   grid-column: 1 / -1;
 }
 
+.guest-hello {
+  margin: 0 0 0.4rem;
+  font-size: 1.7rem;
+}
+
+.plus-one {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem 1.5rem;
+}
+
 .rsvp-form input,
 .rsvp-form select,
 .rsvp-form textarea {
@@ -427,8 +438,34 @@ main {
 .alert--info,
 .alert--success { color: var(--ink-soft); }
 
-.thanks {
+.receipt {
   max-width: var(--measure);
+}
+
+.receipt-list {
+  margin: 0 0 1.6rem;
+  padding: 0;
+}
+
+.receipt-list div {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.receipt-list div:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.receipt-list dt {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.receipt-list dd {
+  margin: 0;
 }
 
 .colophon {
@@ -507,7 +544,8 @@ main {
   }
 
   .facts,
-  .rsvp-form {
+  .rsvp-form,
+  .plus-one {
     grid-template-columns: 1fr;
   }
 }

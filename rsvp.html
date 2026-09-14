@@ -30,38 +30,51 @@
 
   <main id="main" class="page">
     <h1 class="page-title">RSVP</h1>
-    <p class="lede">We would love to know if you can make it by <span data-rsvp-deadline>1 February 2027</span>.</p>
+    <p class="lede" data-rsvp-intro>We would love to know if you can make it by <span data-rsvp-deadline>1 February 2027</span>.</p>
 
     <div class="alert" data-alert hidden></div>
 
-    <form id="rsvp-form" class="rsvp-form">
-      <label>
-        Your name
-        <input type="text" name="name" autocomplete="name" required>
-      </label>
+    <p class="lede" data-rsvp-locked hidden>
+      This RSVP is personal. Please open the unique link we sent you — it already has your name on it.
+    </p>
+
+    <form id="rsvp-form" class="rsvp-form" hidden>
+      <input type="hidden" name="token" data-guest-token>
+      <input type="hidden" name="name" data-guest-name-input>
+
+      <p class="guest-hello full">Hello, <span data-guest-name></span>.</p>
+
       <label>
         Email
-        <input type="email" name="email" autocomplete="email" required>
+        <input type="email" name="email" autocomplete="email" data-guest-email>
       </label>
       <label>
-        Can you come?
+        Will you be there?
         <select name="attending" required>
           <option value="" selected disabled>Please choose</option>
           <option value="Yes">Yes, I will be there</option>
           <option value="No">Sorry, I cannot make it</option>
         </select>
       </label>
-      <label>
-        Number of guests in your party
-        <input type="number" name="guests" min="1" max="10" value="1" required>
-      </label>
-      <label>
+
+      <div class="full plus-one" data-plus-one hidden>
+        <label>
+          Will <span data-plus-one-label>your guest</span> join you?
+          <select name="plus_one_attending" data-plus-one-attending>
+            <option value="" selected disabled>Please choose</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+        <label data-plus-one-name-field>
+          Guest's name
+          <input type="text" name="plus_one_name" data-plus-one-name>
+        </label>
+      </div>
+
+      <label class="full">
         Dietary notes
         <input type="text" name="diet" placeholder="Allergies, vegetarian, etc.">
-      </label>
-      <label class="full" data-invite-field hidden>
-        Invite code
-        <input type="text" name="invite_code" autocomplete="off">
       </label>
       <label class="full">
         Message for us
@@ -70,9 +83,33 @@
       <button type="submit">Send RSVP</button>
     </form>
 
-    <div class="thanks" data-thanks hidden>
-      <p class="headline-small">Thank you.</p>
-      <p>We have your reply. Add the day to your calendar while you are here.</p>
+    <div class="receipt" data-receipt hidden>
+      <p class="headline-small">Thank you, <span data-receipt-name></span>.</p>
+      <p class="lede">We have your reply. It cannot be changed here — if something is wrong, please email us at <a data-contact-link href="mailto:rachel.and.tadhg@example.com"><span data-contact>rachel.and.tadhg@example.com</span></a>.</p>
+
+      <dl class="receipt-list">
+        <div>
+          <dt>You</dt>
+          <dd data-receipt-attending></dd>
+        </div>
+        <div data-receipt-plus-wrap hidden>
+          <dt>Guest</dt>
+          <dd><span data-receipt-plus-name></span> — <span data-receipt-plus-attending></span></dd>
+        </div>
+        <div data-receipt-email-wrap hidden>
+          <dt>Email</dt>
+          <dd data-receipt-email></dd>
+        </div>
+        <div data-receipt-diet-wrap hidden>
+          <dt>Dietary notes</dt>
+          <dd data-receipt-diet></dd>
+        </div>
+        <div data-receipt-message-wrap hidden>
+          <dt>Message</dt>
+          <dd data-receipt-message></dd>
+        </div>
+      </dl>
+
       <p>
         <a class="text-link" data-cal-google href="#" target="_blank" rel="noreferrer">Google Calendar</a>
         <span class="dot">·</span>

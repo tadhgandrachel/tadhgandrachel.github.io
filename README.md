@@ -1,6 +1,6 @@
 # Rachel & Tadhg — wedding website
 
-A small static site for our wedding on **9 April 2027** at **The Ravenswood, Sussex**. White background, film-strip photos, handwritten type, and an RSVP form that writes straight to a Google Sheet.
+A small static site for our wedding on **9 April 2027** at **The Ravenswood, Sussex**. White background, film-strip photos, handwritten type, and personal RSVP links that update a Google Sheet guest list. After someone replies, their link becomes read-only — they email you to change it.
 
 Pages: `index.html` (invitation) · `the-day.html` · `photos.html` · `rsvp.html`
 
@@ -45,7 +45,6 @@ Everything guests see is driven by **`js/config.js`**. Change the values, save, 
 | `photos` | File paths and alt text. Add or remove entries as needed |
 | `rsvp.deadline` | Reply-by date shown above the form |
 | `rsvp.googleScriptUrl` | Web App URL from Apps Script (section 3) |
-| `rsvp.inviteCode` | Optional shared code. Leave `""` to hide the field |
 | `contactEmail` | Shown in the footer |
 
 You do **not** need to edit the HTML files for ordinary copy changes.
@@ -72,76 +71,114 @@ The first four images are the hero film strip. Every entry in `photos` appears i
 
 ---
 
-## 3. Connect Google Sheets
+## 3. Guest list and unique RSVP links
 
-RSVPs are posted to a Google Apps Script web app, which appends a row to your spreadsheet. No server, no database.
+Each household gets a private link like:
+
+```
+https://tadhgandrachel.github.io/rsvp.html?g=ab3k9m2q
+```
+
+That link loads their name (and +1, if they have one). The form will not accept RSVPs without a valid token from your sheet.
 
 ### Create the sheet
 
 1. Go to [sheets.google.com](https://sheets.google.com) and start a **Blank spreadsheet**.
-2. Name it something like `Wedding RSVPs`.
-3. You can leave the first tab empty. The script creates a tab called `RSVPs` and writes these headers on first use:
+2. Name it something like `Wedding guests`.
+3. Rename the first tab to **Guests** (or leave it; the script will create `Guests` if needed).
+4. Put guests in rows. You only need to fill the name columns yourself:
 
-`Timestamp | Name | Email | Attending | Guests | Dietary | Message`
+| Token | Name | Plus one allowed | Plus one name | Email | Link | … |
+| --- | --- | --- | --- | --- | --- | --- |
+| *(leave blank)* | Sam O'Neill | No | | sam@example.com | *(leave blank)* | |
+| *(leave blank)* | Alex & Jo | Yes | Jo Murphy | alex@example.com | *(leave blank)* | |
+
+- **Name** — the person (or household) the invite is for. This is locked on the form.
+- **Plus one allowed** — `Yes` if they may bring a guest, `No` if not.
+- **Plus one name** — optional. Fill this if you already know who the +1 is; they will see that name. Leave blank to let them type a name.
+- **Email** — optional. Prefills the form.
+
+The script fills **Token** and **Link**, and later writes the RSVP answers into the remaining columns on **that same row**. It does not add a new row.
+
+Once **Attending** or **Responded at** is filled, the guest sees a read-only copy of their reply. They cannot edit it on the site. If they need a change, they contact you; you can unlock the row by clearing those two cells.
 
 ### Add the script
 
 1. In the sheet: **Extensions → Apps Script**.
 2. Delete any code in `Code.gs`.
 3. Paste the contents of [`sheets/Code.gs`](sheets/Code.gs).
-4. Optional: set `NOTIFY_EMAIL` at the top of that file to your email if you want a message each time someone RSVPs.
-5. Click **Save** (disk icon). Name the project `Wedding RSVP`.
+4. Set `SITE_URL` at the top to `https://tadhgandrachel.github.io/`
+5. Optional: set `NOTIFY_EMAIL` if you want an email each time someone RSVPs.
+6. **Save**. Name the project `Wedding RSVP`.
+
+### Generate the links
+
+1. In Apps Script: select `generateGuestLinks` → **Run**. Authorise when asked.
+2. Or reload the spreadsheet and use **Wedding → Generate RSVP links**.
+3. Each named row now has a Token and a full Link. Send that Link to that guest — not the generic `/rsvp.html` page.
+
+If you add more guests later, run **Generate RSVP links** again. Existing tokens are left as they are.
 
 ### Deploy the web app
 
-1. Click **Deploy → New deployment**.
-2. Gear icon next to **Select type → Web app**.
-3. Settings:
-   - **Description:** `RSVP form`
-   - **Execute as:** `Me`
-   - **Who has access:** `Anyone`
-4. Click **Deploy**.
-5. Google will ask you to **Authorise access**. Choose your account, click through the “unverified app” warning (**Advanced → Go to Wedding RSVP**), and allow.
-6. Copy the **Web app URL**. It looks like:
-
-```
-https://script.google.com/macros/s/AKfycb…/exec
-```
-
-7. Paste that URL into `js/config.js`:
+1. **Deploy → New deployment** → type **Web app**.
+2. **Execute as:** `Me`. **Who has access:** `Anyone`.
+3. **Deploy**, authorise, and copy the Web App URL (`https://script.google.com/macros/s/…/exec`).
+4. Paste it into `js/config.js`:
 
 ```js
 rsvp: {
   deadline: "1 February 2027",
   googleScriptUrl: "https://script.google.com/macros/s/YOUR_ID/exec",
-  inviteCode: "",
 }
 ```
 
+5. Push the site so the live Pages site has that URL.
+
 ### Test it
 
-1. Open the site and submit a dummy RSVP.
-2. Check the `RSVPs` tab in the sheet — a new row should appear within a few seconds.
-3. Optional: open the Web App URL in a browser. You should see `RSVP endpoint is live.`
+1. Copy one **Link** from the sheet.
+2. Open it. You should see “Hello, [Name]” and, if allowed, the +1 fields.
+3. Submit a dummy RSVP. The same row should update: Attending, Plus one attending, Dietary, Message, Responded at.
+4. Open the same link again. They should see a read-only copy of their reply, not the form. A second submit is rejected.
 
-If nothing appears, open **Apps Script → Executions** and look for a failed run. The usual causes are forgetting to deploy, or setting “Who has access” to something other than **Anyone**.
+To let someone reply again (for example after they email you), clear **Attending** and **Responded at** on their row.
 
-When you change `Code.gs` later, use **Deploy → Manage deployments → Edit (pencil) → New version**, then Deploy again. The URL stays the same.
+Opening `/rsvp.html` with no `?g=` shows a note to use the personal link.
+
+If a link fails, check **Apps Script → Executions**. After you change `Code.gs`, use **Deploy → Manage deployments → Edit → New version**.
 
 ---
 
-## 4. Publish
+## 4. Publish (GitHub Pages)
 
-The site is just HTML, CSS, JS, and images.
+This repo is `tadhgandrachel.github.io`, so GitHub Pages serves the site from the `main` branch. No extra host is needed.
 
-**GitHub Pages**
+1. Push `main` to GitHub (see below if you use a PAT).
+2. On GitHub: **Settings → Pages**.
+3. **Build and deployment → Source:** `Deploy from a branch`.
+4. **Branch:** `main` / `/ (root)` → **Save**.
+5. After a minute or two the site is at:
 
-1. Push this repo to GitHub.
-2. **Settings → Pages → Deploy from a branch**.
-3. Branch: `main` or `master`, folder: `/ (root)`.
-4. After a minute the site is at `https://YOUR_USER.github.io/YOUR_REPO/`.
+   **https://tadhgandrachel.github.io/**
 
-Any other static host (Netlify, Cloudflare Pages, a folder on your own domain) works the same way: upload the repo root.
+`.nojekyll` is already in the repo so GitHub will not run Jekyll on the files.
+
+Later changes go live the same way: commit, push `main`, wait for Pages to rebuild.
+
+### Push with a PAT (no Keychain)
+
+`origin` is HTTPS. From a local terminal, so the token is not stored:
+
+```bash
+cd /Users/tadhgokeeffe/repos/jsons/wedding-website
+read -s GH_TOKEN
+git -c credential.helper= \
+  push -u "https://tadhgandrachel:${GH_TOKEN}@github.com/tadhgandrachel/tadhgandrachel.github.io.git" main
+unset GH_TOKEN
+```
+
+Use the GitHub username that owns the token if it is not `tadhgandrachel`.
 
 ---
 
@@ -151,7 +188,7 @@ Any other static host (Netlify, Cloudflare Pages, a folder on your own domain) w
 index.html          Invitation home page
 the-day.html        When, where, running order, stay
 photos.html         Photo gallery
-rsvp.html           RSVP form
+rsvp.html           RSVP (needs ?g= token from the sheet)
 css/styles.css      Layout and invitation styling
 js/config.js        All guest-facing copy and the Sheets URL
 js/app.js           Renders each page, calendar links, RSVP submit
