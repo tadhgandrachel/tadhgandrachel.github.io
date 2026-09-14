@@ -324,36 +324,11 @@
     return v === "yes" || v === "y" || v === "true" || v === "1";
   }
 
-  function splitCoupleName(name) {
-    var parts = String(name || "").trim().split(/\s+(?:&|and)\s+/i);
-    if (parts.length === 2 && parts[0].trim() && parts[1].trim()) {
-      return [parts[0].trim(), parts[1].trim()];
-    }
-    return null;
-  }
-
-  function namesOverlap(a, b) {
-    var x = String(a || "").trim().toLowerCase();
-    var y = String(b || "").trim().toLowerCase();
-    if (!x || !y) return false;
-    return x === y || y.indexOf(x) !== -1 || x.indexOf(y) !== -1;
-  }
-
   function partyFromGuest(guest) {
-    var household = String(guest.name || "").trim();
-    var plus = String(guest.guestTwoName || guest.plusOneNameReply || guest.plusOneName || "").trim();
-    var one = String(guest.guestOneName || "").trim();
-    var two = String(guest.guestTwoName || "").trim();
-    if (one && two) return { one: one, two: two };
-    var split = splitCoupleName(household);
-    if (plus) {
-      if (split && namesOverlap(split[1], plus)) {
-        return { one: split[0], two: plus };
-      }
-      return { one: household, two: plus };
-    }
-    if (split) return { one: split[0], two: split[1] };
-    return { one: household, two: "" };
+    return {
+      one: String(guest.name || "").trim(),
+      two: String(guest.plusOneNameReply || guest.plusOneName || "").trim(),
+    };
   }
 
   function showReceipt(guest) {

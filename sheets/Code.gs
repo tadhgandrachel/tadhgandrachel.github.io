@@ -7,8 +7,8 @@
  *   | Opened at | Last opened | Opens | Last page
  *
  * Setup
- * 1. Put guest names in the Name column. For a couple, put both names
- *    ("John Doe and Mary Bloggs") or put one in Name and one in Plus one name.
+ * 1. Put guest names in the Name column. For a +1, set Plus one allowed to Yes.
+ *    Optional: fill Plus one name if you already know who they may bring.
  * 2. Set SITE_URL below to your live site (no trailing path).
  * 3. In the Apps Script editor: Run → generateGuestLinks
  *    (or use the Wedding menu after you reload the sheet)
@@ -68,19 +68,16 @@ function doGet(e) {
   }
 
   var row = found.row;
-  var party = partyNames_(row);
   recordOpen_(found, params.page);
   return respond_(params.callback, {
     result: "success",
     name: row.Name || "",
     email: row.Email || "",
-    guestOneName: party.one,
-    guestTwoName: party.two,
-    plusOneAllowed: Boolean(party.two) || isYes_(row["Plus one allowed"]),
-    plusOneName: party.two || row["Plus one name"] || "",
+    plusOneAllowed: isYes_(row["Plus one allowed"]),
+    plusOneName: row["Plus one name"] || "",
     attending: row.Attending || "",
     plusOneAttending: row["Plus one attending"] || "",
-    plusOneNameReply: row["Plus one name (RSVP)"] || party.two || "",
+    plusOneNameReply: row["Plus one name (RSVP)"] || "",
     diet: row.Dietary || "",
     message: row.Message || "",
     alreadyReplied: hasReplied_(row),
@@ -108,12 +105,11 @@ function doPost(e) {
       });
     }
 
-    var party = partyNames_(found.row);
-    var allowedSecond = Boolean(party.two) || isYes_(found.row["Plus one allowed"]);
-    var plusOneAttending = allowedSecond ? (params.plus_one_attending || "") : "";
+    var allowedPlusOne = isYes_(found.row["Plus one allowed"]);
+    var plusOneAttending = allowedPlusOne ? (params.plus_one_attending || "") : "";
     var plusOneName = "";
-    if (allowedSecond) {
-      plusOneName = params.plus_one_name || party.two || found.row["Plus one name"] || "";
+    if (allowedPlusOne && isYes_(plusOneAttending)) {
+      plusOneName = params.plus_one_name || found.row["Plus one name"] || "";
     }
 
     var sheet = found.sheet;
@@ -136,8 +132,9 @@ function doPost(e) {
         subject: "Wedding RSVP: " + (found.row.Name || "Guest") + " — " + (params.attending || ""),
         body: [
           "Name: " + (found.row.Name || ""),
-          (party.one || "Guest") + ": " + (params.attending || ""),
-          plusOneName ? plusOneName + ": " + plusOneAttending : "Plus one attending: " + plusOneAttending,
+          "Attending: " + (params.attending || ""),
+          "Plus one attending: " + plusOneAttending,
+          "Plus one name: " + plusOneName,
           "Email: " + (params.email || found.row.Email || ""),
           "Dietary: " + (params.diet || ""),
           "Message: " + (params.message || ""),
@@ -268,35 +265,6 @@ function rowObject_(headers, values) {
 function setCell_(sheet, rowIndex, cols, header, value) {
   if (cols[header] == null) return;
   sheet.getRange(rowIndex, cols[header] + 1).setValue(value);
-}
-
-function splitCouple_(name) {
-  var parts = String(name || "").trim().split(/\s+(?:&|and)\s+/i);
-  if (parts.length === 2 && parts[0].trim() && parts[1].trim()) {
-    return [parts[0].trim(), parts[1].trim()];
-  }
-  return null;
-}
-
-function namesOverlap_(a, b) {
-  var x = String(a || "").trim().toLowerCase();
-  var y = String(b || "").trim().toLowerCase();
-  if (!x || !y) return false;
-  return x === y || y.indexOf(x) !== -1 || x.indexOf(y) !== -1;
-}
-
-function partyNames_(row) {
-  var household = String(row.Name || "").trim();
-  var plus = String(row["Plus one name"] || row["Plus one name (RSVP)"] || "").trim();
-  var split = splitCouple_(household);
-  if (plus) {
-    if (split && namesOverlap_(split[1], plus)) {
-      return { one: split[0], two: plus };
-    }
-    return { one: household, two: plus };
-  }
-  if (split) return { one: split[0], two: split[1] };
-  return { one: household, two: "" };
 }
 
 function hasReplied_(row) {
