@@ -107,7 +107,7 @@ window.WEDDING = {
   rsvp: {
     deadline: "1 February 2027",
     // Paste the Web App URL from Apps Script after you deploy (README, step 3)
-    googleScriptUrl: "https://script.google.com/macros/s/AKfycby-AdDpNBBGsPYM_b5qztdaHwT8zJF5JtwiTY-PCPjnlCTWT01X7QJSrdGDfEWIBAMgiA/exec",
+    googleScriptUrl: "https://script.google.com/macros/s/AKfycbwMWCZy8kx91bAtOEmc0KGUKPSWHc7eJp-fJ_5P_yRAIwCHRY5YjtK_PMM4Sx2V9i31mQ/exec",
   },
 
   contactEmail: "tadhgok13@gmail.com",
