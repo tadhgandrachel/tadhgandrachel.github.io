@@ -232,7 +232,7 @@
     }[page];
 
     if (nav && current) {
-      var active = nav.querySelector('a[href="' + current + '"]');
+      var active = nav.querySelector('a[href="' + current + '"], a[href^="' + current + '?"]');
       if (active) active.setAttribute("aria-current", "page");
     }
 
@@ -258,14 +258,100 @@
     box.textContent = message;
   }
 
+  var TOKEN_KEY = "weddingGuestToken";
+
+  function readStoredToken() {
+    try {
+      return (sessionStorage.getItem(TOKEN_KEY) || "").trim();
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function storeToken(token) {
+    if (!token) return;
+    try {
+      sessionStorage.setItem(TOKEN_KEY, token);
+    } catch (e) {}
+  }
+
   function guestToken() {
     var params = new URLSearchParams(window.location.search);
-    return (params.get("g") || params.get("token") || "").trim();
+    var fromUrl = (params.get("g") || params.get("token") || "").trim();
+    if (fromUrl) {
+      storeToken(fromUrl);
+      return fromUrl;
+    }
+    return readStoredToken();
+  }
+
+  function isSitePage(href) {
+    if (!href) return false;
+    var value = href.trim();
+    if (value.charAt(0) === "#") return false;
+    if (/^(mailto:|tel:|javascript:)/i.test(value)) return false;
+    try {
+      var url = new URL(value, window.location.href);
+      if (url.origin !== window.location.origin) return false;
+      return /\.html$/i.test(url.pathname) || /\/$/.test(url.pathname);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function withGuestToken(href, token) {
+    var hashAt = href.indexOf("#");
+    var hash = hashAt >= 0 ? href.slice(hashAt) : "";
+    var base = hashAt >= 0 ? href.slice(0, hashAt) : href;
+    var queryAt = base.indexOf("?");
+    var path = queryAt >= 0 ? base.slice(0, queryAt) : base;
+    var params = new URLSearchParams(queryAt >= 0 ? base.slice(queryAt + 1) : "");
+    if (params.get("g") || params.get("token")) return href;
+    params.set("g", token);
+    return path + "?" + params.toString() + hash;
+  }
+
+  function carryGuestToken() {
+    var token = guestToken();
+    if (!token) return;
+
+    if (document.body.getAttribute("data-page") === "rsvp") {
+      var params = new URLSearchParams(window.location.search);
+      if (!params.get("g") && !params.get("token")) {
+        params.set("g", token);
+        history.replaceState(null, "", window.location.pathname + "?" + params.toString() + window.location.hash);
+      }
+    }
+
+    document.querySelectorAll("a[href]").forEach(function (link) {
+      var href = link.getAttribute("href");
+      if (!isSitePage(href)) return;
+      link.setAttribute("href", withGuestToken(href, token));
+    });
+  }
+
+  function guestLookupUrl(token, page) {
+    var base = W.rsvp.googleScriptUrl;
+    var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "g=" + encodeURIComponent(token);
+    if (page) url += "&page=" + encodeURIComponent(page);
+    return url;
+  }
+
+  function trackVisit() {
+    var token = guestToken();
+    if (!token || !W.rsvp.googleScriptUrl) return;
+    var page = document.body.getAttribute("data-page") || "";
+    if (page === "rsvp") return;
+    var url = guestLookupUrl(token, page);
+    fetch(url, { method: "GET", mode: "no-cors", keepalive: true, credentials: "omit" }).catch(function () {
+      var img = document.createElement("img");
+      img.alt = "";
+      img.src = url;
+    });
   }
 
   function fetchGuest(token) {
-    var base = W.rsvp.googleScriptUrl;
-    var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "g=" + encodeURIComponent(token);
+    var url = guestLookupUrl(token, "rsvp");
 
     return fetch(url)
       .then(function (res) {
@@ -470,6 +556,8 @@
   }
 
   render();
+  carryGuestToken();
   setupNav();
   setupRsvp();
+  trackVisit();
 })();

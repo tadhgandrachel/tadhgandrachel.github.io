@@ -81,10 +81,10 @@ The first four images are the hero film strip. Every entry in `photos` appears i
 Each household gets a private link like:
 
 ```
-https://tadhgandrachel.github.io/rsvp.html?g=ab3k9m2q
+https://tadhgandrachel.github.io/?g=ab3k9m2q
 ```
 
-That link loads their name (and +1, if they have one). The form will not accept RSVPs without a valid token from your sheet.
+That link opens the invitation home page. The token stays with them as they browse, so RSVP still knows who they are. The form will not accept RSVPs without a valid token from your sheet. Older `/rsvp.html?g=` links still work.
 
 ### Create the sheet
 
@@ -105,6 +105,8 @@ That link loads their name (and +1, if they have one). The form will not accept 
 
 The script fills **Token** and **Link**, and later writes the RSVP answers into the remaining columns on **that same row**. It does not add a new row.
 
+When someone opens their personal link (and any other page in that same tab), the script also writes **Opened at**, **Last opened**, **Opens**, and **Last page**. That happens even if they never submit the form — handy for seeing who looked and who has not replied yet. Filter for Opens greater than 0 and a blank Attending column.
+
 Once **Attending** or **Responded at** is filled, the guest sees a read-only copy of their reply. They cannot edit it on the site. If they need a change, they contact you; you can unlock the row by clearing those two cells.
 
 ### Add the script
@@ -120,7 +122,7 @@ Once **Attending** or **Responded at** is filled, the guest sees a read-only cop
 
 1. In Apps Script: select `generateGuestLinks` → **Run**. Authorise when asked.
 2. Or reload the spreadsheet and use **Wedding → Generate RSVP links**.
-3. Each named row now has a Token and a full Link. Send that Link to that guest — not the generic `/rsvp.html` page.
+3. Each named row now has a Token and a full Link to the home page (`/?g=…`). Send that Link to that guest — not a generic URL without `?g=`. Re-run this after updating the script if older rows still point at `/rsvp.html`.
 
 If you add more guests later, run **Generate RSVP links** again. Existing tokens are left as they are.
 
@@ -143,13 +145,13 @@ rsvp: {
 ### Test it
 
 1. Copy one **Link** from the sheet.
-2. Open it. You should see “Hello, [Name]” and, if allowed, the +1 fields.
-3. Submit a dummy RSVP. The same row should update: Attending, Plus one attending, Dietary, Message, Responded at.
+2. Open it. You should land on the invitation. Open RSVP — you should see “Hello, [Name]” and, if allowed, the +1 fields.
+3. Submit a dummy RSVP. The same row should update: Attending, Plus one attending, Dietary, Message, Responded at. Opening the link (even without submitting) should fill Opened at, Last opened, Opens, and Last page.
 4. Open the same link again. They should see a read-only copy of their reply, not the form. A second submit is rejected.
 
 To let someone reply again (for example after they email you), clear **Attending** and **Responded at** on their row.
 
-Opening `/rsvp.html` with no `?g=` shows a note to use the personal link.
+Opening `/rsvp.html` with no saved token shows a note to use the personal link.
 
 If a link fails, check **Apps Script → Executions**. After you change `Code.gs`, use **Deploy → Manage deployments → Edit → New version**.
 
@@ -194,7 +196,7 @@ index.html          Invitation home page
 the-day.html        When, where, running order
 getting-there.html  Map, flights, stay, and Saturday to Putney
 photos.html         Photo gallery
-rsvp.html           RSVP (needs ?g= token from the sheet)
+rsvp.html           RSVP (uses ?g= from the link or the same tab)
 css/styles.css      Layout and invitation styling
 js/config.js        All guest-facing copy and the Sheets URL
 js/app.js           Renders each page, calendar links, RSVP submit

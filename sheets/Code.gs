@@ -4,6 +4,7 @@
  * Sheet tab "Guests" columns (first row = headers):
  *   Token | Name | Plus one allowed | Plus one name | Email | Link
  *   | Attending | Plus one attending | Plus one name (RSVP) | Dietary | Message | Responded at
+ *   | Opened at | Last opened | Opens | Last page
  *
  * Setup
  * 1. Put guest names in the Name column. For a +1, set Plus one allowed to Yes.
@@ -18,7 +19,12 @@
  * 5. Paste the Web App URL into js/config.js → rsvp.googleScriptUrl
  *
  * Send each guest their Link, e.g.
- *   https://tadhgandrachel.github.io/rsvp.html?g=ab3k9m2q
+ *   https://tadhgandrachel.github.io/?g=ab3k9m2q
+ * They land on the invitation; the token stays with them if they open RSVP.
+ *
+ * Opening a personal link (or any page after that, while the token is
+ * still in the tab) writes Opened at / Last opened / Opens / Last page.
+ * That is separate from submitting an RSVP.
  *
  * After the first RSVP the row is locked. Guests see a read-only summary
  * and must email you to change it. To unlock a row, clear Attending
@@ -42,6 +48,10 @@ var HEADERS = [
   "Dietary",
   "Message",
   "Responded at",
+  "Opened at",
+  "Last opened",
+  "Opens",
+  "Last page",
 ];
 
 function doGet(e) {
@@ -58,6 +68,7 @@ function doGet(e) {
   }
 
   var row = found.row;
+  recordOpen_(found, params.page);
   return respond_(params.callback, {
     result: "success",
     name: row.Name || "",
@@ -140,7 +151,8 @@ function doPost(e) {
 function generateGuestLinks() {
   var sheet = getGuestSheet_();
   var last = Math.max(sheet.getLastRow(), 1);
-  var range = sheet.getRange(1, 1, last, HEADERS.length);
+  var width = Math.max(sheet.getLastColumn(), HEADERS.length);
+  var range = sheet.getRange(1, 1, last, width);
   var data = range.getValues();
   var cols = colMap_(data[0]);
   var used = {};
@@ -155,7 +167,7 @@ function generateGuestLinks() {
       data[i][cols.Token] = token;
     }
     used[token] = true;
-    data[i][cols.Link] = SITE_URL.replace(/\/?$/, "/") + "rsvp.html?g=" + token;
+    data[i][cols.Link] = SITE_URL.replace(/\/?$/, "/") + "?g=" + token;
   }
 
   range.setValues(data);
@@ -181,7 +193,37 @@ function getGuestSheet_() {
     sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
     sheet.setFrozenRows(1);
   }
+  ensureColumns_(sheet);
   return sheet;
+}
+
+function ensureColumns_(sheet) {
+  var last = Math.max(sheet.getLastColumn(), 1);
+  var headers = sheet.getRange(1, 1, 1, last).getValues()[0];
+  var have = colMap_(headers);
+  HEADERS.forEach(function (name) {
+    if (have[name] == null) {
+      sheet.getRange(1, sheet.getLastColumn() + 1).setValue(name);
+    }
+  });
+}
+
+function recordOpen_(found, page) {
+  try {
+    var sheet = found.sheet;
+    var cols = colMap_(sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0]);
+    var r = found.rowIndex;
+    var now = new Date();
+    if (!found.row["Opened at"]) {
+      setCell_(sheet, r, cols, "Opened at", now);
+    }
+    setCell_(sheet, r, cols, "Last opened", now);
+    var opens = Number(found.row.Opens);
+    if (isNaN(opens) || opens < 0) opens = 0;
+    setCell_(sheet, r, cols, "Opens", opens + 1);
+    var safePage = String(page || "").replace(/[^a-z0-9-]/gi, "").slice(0, 24);
+    if (safePage) setCell_(sheet, r, cols, "Last page", safePage);
+  } catch (err) {}
 }
 
 function findGuest_(token) {
