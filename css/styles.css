@@ -602,13 +602,17 @@ main {
   }
 
   .hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(120px, 38%) minmax(0, 1fr);
+    gap: 1rem;
     padding-top: 0.6rem;
   }
 
   .hero .film-strip--vertical {
-    max-width: 230px;
-    margin-inline: auto;
+    padding: 0.55rem 0.85rem;
+  }
+
+  .headline {
+    font-size: clamp(2.3rem, 12vw, 4rem);
   }
 
   .facts,
