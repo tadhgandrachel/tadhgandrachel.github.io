@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getting there — Rachel &amp; Tadhg</title>
+  <meta name="description" content="How to get to The Ravenswood, Sharpthorne, for Rachel and Tadhg's wedding on 9 April 2027.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="travel">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="masthead">
+    <a class="wordmark" href="index.html" data-names>Rachel &amp; Tadhg</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Menu</span>
+      <span></span>
+    </button>
+    <nav class="site-nav" id="site-nav">
+      <a href="the-day.html">The day</a>
+      <a href="getting-there.html">Getting there</a>
+      <a href="photos.html">Photos</a>
+      <a href="rsvp.html">RSVP</a>
+    </nav>
+  </header>
+
+  <main id="main" class="page">
+    <h1 class="page-title" data-getting-heading>Getting there</h1>
+    <p class="lede" data-getting-body>
+      The wedding is at The Ravenswood, Cinder Hill, Sharpthorne, West Sussex, RH19 4HY. Gatwick is the nearest airport — about 20–25 minutes by taxi.
+    </p>
+
+    <div class="map-wrap">
+      <iframe
+        data-maps-embed
+        title="Map of The Ravenswood"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+        src="https://maps.google.com/maps?q=The+Ravenswood+Cinder+Hill+Sharpthorne+RH19+4HY&amp;output=embed"
+      ></iframe>
+    </div>
+    <p class="lede">
+      <a class="text-link" data-maps href="https://maps.google.com/?q=The+Ravenswood+Cinder+Hill+Sharpthorne+RH19+4HY" target="_blank" rel="noreferrer">Open in Google Maps</a>
+    </p>
+
+    <h2 class="subhead" data-flights-heading>Flights from Dublin</h2>
+    <div data-flights-body></div>
+    <div class="skyscanner-wrap">
+      <div
+        data-skyscanner-widget="FlightSearchWidget"
+        data-locale="en-GB"
+        data-market="IE"
+        data-currency="EUR"
+        data-origin-iata-code="DUB"
+        data-destination-iata-code="LGW"
+        data-origin-name="Dublin"
+        data-destination-name="London Gatwick"
+        data-flight-outbound-date="2027-04-09"
+        data-flight-inbound-date="2027-04-11"
+        data-flight-type="return"
+        data-button-colour="#e11d1d"
+        data-powered-by-logo-colour="dark"
+        data-widget-padding="0"
+      ></div>
+    </div>
+    <p class="lede">
+      <a class="text-link" data-flights-search href="https://www.skyscanner.ie/transport/flights/dub/lgw/270409/270411/?adultsv2=1&amp;cabinclass=economy&amp;preferdirects=true&amp;rtn=1" target="_blank" rel="noreferrer">Open this search on Skyscanner</a>
+    </p>
+
+    <h2 class="subhead" data-stay-heading>Where to stay</h2>
+    <div data-stay-body></div>
+
+    <h2 class="subhead" data-travel-heading>Getting to Putney</h2>
+    <div data-travel-body></div>
+  </main>
+
+  <footer class="colophon">
+    <p><span data-names>Rachel &amp; Tadhg</span> · <span data-date>09.04.2027</span></p>
+    <p>Questions? <a data-contact-link href="mailto:rachel.and.tadhg@example.com"><span data-contact>rachel.and.tadhg@example.com</span></a></p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="https://widgets.skyscanner.net/widget-server/js/loader.js" async></script>
+</body>
+</html>

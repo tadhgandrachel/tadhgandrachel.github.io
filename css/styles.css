@@ -275,10 +275,24 @@ main {
   margin: 0 0 2.2rem;
 }
 
+.map-wrap {
+  max-width: 36rem;
+  margin: 0 0 1rem;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.map-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
 .skyscanner-wrap {
   max-width: 36rem;
   margin: 0 0 1rem;
-  min-height: 16rem;
 }
 
 [data-stay-body] .lede,

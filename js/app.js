@@ -32,6 +32,11 @@
     if (el && value) el.setAttribute("href", value);
   }
 
+  function setAttr(sel, name, value) {
+    var el = $(sel);
+    if (el && value) el.setAttribute(name, value);
+  }
+
   function filmFigure(photo) {
     var fig = document.createElement("figure");
     var img = document.createElement("img");
@@ -47,6 +52,7 @@
     var titles = {
       home: names + " — " + W.date.display,
       day: "The day — " + names,
+      travel: "Getting there — " + names,
       photos: "Photos — " + names,
       rsvp: "RSVP — " + names,
     };
@@ -68,6 +74,9 @@
     setText("[data-contact]", W.contactEmail);
     setHref("[data-contact-link]", "mailto:" + W.contactEmail);
     setHref("[data-maps]", W.venue.mapsUrl);
+    setAttr("[data-maps-embed]", "src", W.venue.mapsEmbedUrl);
+    setText("[data-getting-heading]", W.gettingThere && W.gettingThere.heading);
+    setText("[data-getting-body]", W.gettingThere && W.gettingThere.body);
     setText("[data-travel-heading]", W.travel && W.travel.heading);
     renderParagraphs("[data-travel-body]", W.travel && W.travel.paragraphs);
     setText("[data-flights-heading]", W.flights && W.flights.heading);
@@ -217,6 +226,7 @@
     var page = document.body.getAttribute("data-page");
     var current = {
       day: "the-day.html",
+      travel: "getting-there.html",
       photos: "photos.html",
       rsvp: "rsvp.html",
     }[page];

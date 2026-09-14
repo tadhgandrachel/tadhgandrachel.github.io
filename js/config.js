@@ -25,6 +25,7 @@ window.WEDDING = {
     area: "Sussex, UK",
     address: "Cinder Hill, Sharpthorne, West Sussex, RH19 4HY",
     mapsUrl: "https://maps.google.com/?q=The+Ravenswood+Cinder+Hill+Sharpthorne+RH19+4HY",
+    mapsEmbedUrl: "https://maps.google.com/maps?q=The+Ravenswood+Cinder+Hill+Sharpthorne+RH19+4HY&output=embed",
     notes: "Please RSVP if you can come.",
   },
 
@@ -56,12 +57,17 @@ window.WEDDING = {
     },
   ],
 
+  gettingThere: {
+    heading: "Getting there",
+    body: "The wedding is at The Ravenswood, Cinder Hill, Sharpthorne, West Sussex, RH19 4HY. Gatwick is the nearest airport — about 20–25 minutes by taxi.",
+  },
+
   travel: {
     heading: "Getting to Putney",
     paragraphs: [
-      "Saturday is in London, so most people will head back towards Putney on Friday night or Saturday morning.",
-      "The nearest station is East Grinstead, about a 10-minute taxi from The Ravenswood. Trains run direct to London Victoria in just under an hour. From Victoria it is a short hop to Putney Bridge on the District line, or change at Clapham Junction for Putney station. East Grinstead to Putney is usually about 1 hour 15 minutes on the train, plus the taxi to the station. Haywards Heath is a little further by taxi and has more frequent trains into London.",
-      "A taxi or Uber from the venue all the way to Putney takes about an hour to an hour and a half, depending on traffic — worth it if you are sharing, travelling late, or miss the last train from East Grinstead (typically around 11pm). Book ahead for Friday night if you can, as local cars get busy.",
+      "We are not expecting anyone to travel back to Putney on Friday night — stay local if you can, and come into London on Saturday.",
+      "The easiest way is a taxi to East Grinstead, then the train to Clapham Junction and a change for Putney. East Grinstead is about 10 minutes from The Ravenswood. Haywards Heath is a little further by taxi and has more frequent trains.",
+      "A taxi or Uber all the way takes about an hour to an hour and a half, depending on traffic — worth it if you are sharing.",
     ],
   },
 
@@ -71,10 +77,9 @@ window.WEDDING = {
   },
 
   flights: {
-    heading: "Getting there",
+    heading: "Flights from Dublin",
     paragraphs: [
-      "The easiest airport is Gatwick — about 20–25 minutes from The Ravenswood.",
-      "We suggest an early Friday morning Dublin to Gatwick flight, coming home Sunday afternoon. That gets you here in time for the wedding, and leaves room for the Boat Race on Sunday if you want it.",
+      "If you are flying from Dublin, we suggest an early Friday morning arrival into Gatwick, coming home Sunday afternoon. That gets you here in time for the day, and leaves room for the Boat Race on Sunday if you want it.",
     ],
     origin: "DUB",
     destination: "LGW",
@@ -88,7 +93,6 @@ window.WEDDING = {
     paragraphs: [
       "The Ravenswood has rooms on site, and it is only about 20–25 minutes from Gatwick — handy if you are flying in.",
       "If the on-site rooms go, East Grinstead, Forest Row, and Sharpthorne are close and have inns, B&Bs, and small hotels. Haywards Heath is a little further and has more options, still an easy taxi to the venue.",
-      "An early Friday morning flight from Dublin into Gatwick should get you to The Ravenswood in good time for the day — allow a little extra for bags and a taxi.",
     ],
   },
 

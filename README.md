@@ -2,7 +2,7 @@
 
 A small static site for our wedding on **9 April 2027** at **The Ravenswood, Sussex**. White background, film-strip photos, handwritten type, and personal RSVP links that update a Google Sheet guest list. After someone replies, their link becomes read-only — they email you to change it.
 
-Pages: `index.html` (invitation) · `the-day.html` · `photos.html` · `rsvp.html`
+Pages: `index.html` (invitation) · `the-day.html` · `getting-there.html` · `photos.html` · `rsvp.html`
 
 There is no build step. Open `index.html` locally, or host the folder on GitHub Pages.
 
@@ -38,11 +38,13 @@ Everything guests see is driven by **`js/config.js`**. Change the values, save, 
 | `venue.area` | Short location line (`Sussex, UK`) |
 | `venue.address` | Full address |
 | `venue.mapsUrl` | Google Maps link |
+| `venue.mapsEmbedUrl` | Embed URL for the map on Getting there |
 | `venue.notes` | Small line under the hero (`Please RSVP if you can come.`) |
 | `story.heading` / `story.body` | The short “about the day” paragraph |
 | `itinerary` | Friday and Saturday running order. Keep Friday times as `TBC` until you know |
-| `travel.heading` / `travel.paragraphs` | Trains and taxis from The Ravenswood to Putney |
-| `flights` | Getting there copy and the Dublin–Gatwick Skyscanner dates |
+| `gettingThere.heading` / `gettingThere.body` | Intro on the Getting there page |
+| `travel.heading` / `travel.paragraphs` | Saturday trains from The Ravenswood to Putney |
+| `flights` | Dublin–Gatwick Skyscanner copy and dates |
 | `sunday.heading` / `sunday.body` | Boat Race note for anyone staying on |
 | `stay.heading` / `stay.paragraphs` | Where to stay, Gatwick, nearby towns |
 | `photos` | File paths and alt text. Add or remove entries as needed |
@@ -189,7 +191,8 @@ Use the GitHub username that owns the token if it is not `tadhgandrachel`.
 
 ```
 index.html          Invitation home page
-the-day.html        When, where, running order, stay
+the-day.html        When, where, running order
+getting-there.html  Map, flights, stay, and Saturday to Putney
 photos.html         Photo gallery
 rsvp.html           RSVP (needs ?g= token from the sheet)
 css/styles.css      Layout and invitation styling
