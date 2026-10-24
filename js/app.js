@@ -117,6 +117,24 @@
       });
     }
 
+    var overview = $("[data-weekend-overview]");
+    if (overview && W.itinerary) {
+      overview.innerHTML = "";
+      W.itinerary.forEach(function (day) {
+        var card = document.createElement("article");
+        card.className = "weekend-event";
+        card.innerHTML =
+          '<h2>' + escapeHtml(day.label) + '</h2>' +
+          '<p class="event-date">' + escapeHtml(day.dateLabel) + '</p>' +
+          '<p class="event-time">' + escapeHtml(day.items[0].time) + '</p>' +
+          '<h3>' + escapeHtml(day.venueLabel) + '</h3>' +
+          '<p class="event-location">' + escapeHtml(day.locationLabel) + '</p>' +
+          '<p class="event-dress-code">Dress code: ' + escapeHtml(day.dressCode) + '</p>' +
+          '<p class="event-summary">' + escapeHtml(day.summary) + '</p>';
+        overview.appendChild(card);
+      });
+    }
+
     var days = $("[data-itinerary]");
     if (days && W.itinerary) {
       days.innerHTML = "";

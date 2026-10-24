@@ -378,6 +378,20 @@ main {
   margin-bottom: 2.2rem;
 }
 
+.weekend-overview {
+  max-width: 34rem;
+  margin: 1rem auto 4rem;
+}
+
+.weekend-event { text-align: center; padding: 2.5rem 1rem; }
+.weekend-event h2 { margin: 0 0 1.3rem; font-family: "Mrs Saint Delafield", cursive; font-size: clamp(2.8125rem, 7vw, 3.75rem); font-weight: 400; line-height: 1; text-transform: lowercase; }
+.weekend-event h3 { margin: 1.5rem 0 0.35rem; font-size: 1.2rem; font-weight: 700; }
+.weekend-event p { margin: 0.35rem 0; }
+.event-date { letter-spacing: 0.04em; }
+.event-time { font-weight: 700; }
+.event-location { color: var(--ink-soft); font-size: 1rem; }
+.weekend-event .event-summary { margin-top: 1.2rem; font-style: italic; }
+
 .facts {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -416,16 +430,25 @@ main {
 }
 
 .schedule li {
-  display: grid;
-  grid-template-columns: 4.5rem 1fr;
-  gap: 1rem;
-  padding: 0.85rem 0;
-  border-top: 1px solid var(--line);
+  position: relative;
+  margin-left: 0.35rem;
+  padding: 0 0 1.8rem 1.6rem;
+  border-left: 1px solid var(--line);
 }
 
-.schedule li:last-child {
-  border-bottom: 1px solid var(--line);
+.schedule li::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 0.55rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
 }
+
+.schedule .when { display: block; margin-bottom: 0.3rem; color: var(--ink-soft); }
+.schedule li:last-child { padding-bottom: 0; }
 
 .schedule p {
   margin: 0.15rem 0 0;

@@ -38,6 +38,12 @@ window.WEDDING = {
   itinerary: [
     {
       heading: "Friday 9 April — the wedding",
+      label: "Wedding day",
+      dressCode: "Cocktail",
+      dateLabel: "Friday, 9 April 2027",
+      venueLabel: "The Ravenswood",
+      locationLabel: "Cinder Hill, Sharpthorne, West Sussex, RH19 4HY",
+      summary: "Ceremony, drinks, dinner & dancing",
       items: [
         { time: "2pm", title: "Ceremony", detail: "Add the ceremony time and any notes for guests." },
         { time: "3pm", title: "Drinks", detail: "Add where drinks will be served." },
@@ -47,6 +53,12 @@ window.WEDDING = {
     },
     {
       heading: "Saturday 10 April — Day 2",
+      label: "Day two",
+      dressCode: "Casual",
+      dateLabel: "Saturday, 10 April 2027",
+      venueLabel: "The Boathouse, Putney",
+      locationLabel: "32 Brewhouse Lane, London, SW15 2JX",
+      summary: "Roof terrace drinks & river views, until close",
       mapsUrl: "https://maps.google.com/?q=The+Boathouse+32+Brewhouse+Lane+Putney+SW15+2JX",
       items: [
         {
@@ -114,5 +126,5 @@ window.WEDDING = {
   contactEmail: "tadhgok13@gmail.com",
 
   // Shown in the footer so you can tell a phone has the latest deploy
-  siteVersion: "39",
+  siteVersion: "48",
 };
