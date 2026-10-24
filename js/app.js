@@ -59,6 +59,8 @@
     if (titles[page]) document.title = titles[page];
     setText("[data-invite-lead]", W.inviteLead);
     setText("[data-names]", names);
+    setText("[data-partner-one]", W.partnerOne);
+    setText("[data-partner-two]", W.partnerTwo);
     setText("[data-date]", W.date.display);
     setText("[data-weekday]", W.date.weekday);
     setText("[data-time]", W.date.timeLabel);
@@ -603,7 +605,33 @@
     });
   }
 
+  function setupCountdown() {
+    var countdown = $("[data-countdown]");
+    if (!countdown) return;
+    var target = Date.parse(W.date.countdownTo);
+    if (!Number.isFinite(target)) return;
+    var interval;
+
+    function update() {
+      var remaining = Math.max(0, Math.floor((target - Date.now()) / 1000));
+      setText("[data-countdown-days]", String(Math.floor(remaining / 86400)));
+      setText("[data-countdown-hours]", String(Math.floor(remaining / 3600) % 24).padStart(2, "0"));
+      setText("[data-countdown-minutes]", String(Math.floor(remaining / 60) % 60).padStart(2, "0"));
+      setText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
+      if (remaining === 0) {
+        clearInterval(interval);
+        $(".countdown-caption", countdown).textContent = "Our wedding day has arrived";
+        $(".countdown-units", countdown).hidden = true;
+      }
+    }
+
+    interval = setInterval(update, 1000);
+    update();
+    countdown.hidden = false;
+  }
+
   render();
+  setupCountdown();
   if (window.WEDDING_GUEST && window.WEDDING_GUEST.stamp) window.WEDDING_GUEST.stamp();
   setupNav();
   setupRsvp();

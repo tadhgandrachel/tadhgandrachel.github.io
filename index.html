@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rachel &amp; Tadhg — 09.04.2027</title>
   <meta name="description" content="You're invited to Rachel and Tadhg's wedding on 9 April 2027 at The Ravenswood, Sussex. Please RSVP.">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#fffaf3">
   <meta property="og:title" content="You're invited to Rachel & Tadhg's wedding">
   <meta property="og:description" content="9 April 2027 · The Ravenswood, Sussex · Please RSVP">
   <meta property="og:image" content="https://tadhgandrachel.github.io/img/og.jpg">
@@ -13,14 +13,14 @@
   <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <script src="js/guest.js?v=18"></script>
-  <link rel="icon" href="favicon.png?v=18" type="image/png">
-  <link rel="apple-touch-icon" href="img/apple-touch.png?v=18">
+  <script src="js/guest.js?v=39"></script>
+  <link rel="icon" href="favicon.png?v=39" type="image/png">
+  <link rel="apple-touch-icon" href="img/apple-touch.png?v=39">
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=18">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=39">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -41,29 +41,27 @@
 
   <main id="main">
     <section class="hero">
-      <div class="film-strip film-strip--vertical" data-hero-photos>
-        <figure><img src="img/photos/01.jpg" alt="Rachel and Tadhg looking out over a waterfall"></figure>
-        <figure><img src="img/photos/02.jpg" alt="Rachel and Tadhg on a bridge in the forest"></figure>
-        <figure><img src="img/photos/03.jpg" alt="Rachel and Tadhg among the trees"></figure>
-        <figure><img src="img/photos/04.jpg" alt="A waterfall in the forest"></figure>
-      </div>
+      <img class="venue-illustration" src="img/ravenswood-watercolour-landscape.png?v=39" alt="Delicate watercolour of The Ravenswood surrounded by trees and lawn beneath a pale blue sky" width="1774" height="887" fetchpriority="high">
       <div class="hero-copy">
-        <h1 class="headline" data-headline>
-          <span>we're</span>
-          <span>getting</span>
-          <span>married!</span>
-        </h1>
-        <p class="hero-date" data-date>09.04.2027</p>
-        <p class="hero-save">
-          <span data-invite-lead>You're invited to</span><br>
-          <span data-names>Rachel &amp; Tadhg</span>'s wedding
-        </p>
+        <h1 class="couple-names"><span data-partner-one>Rachel</span><span class="couple-ampersand">&amp;</span><span data-partner-two>Tadhg</span></h1>
+        <p class="invitation-date">Friday, 9 April 2027</p>
+        <div class="invitation-rule" aria-hidden="true"></div>
         <p class="hero-venue">
-          <span data-venue-name>The Ravenswood</span>,<br>
+          <span data-venue-name>The Ravenswood</span><br>
           <span data-venue-area>Sussex, UK</span>
         </p>
-        <p class="hero-note" data-venue-notes>Then Saturday at The Boathouse, Putney. Please RSVP — we want you at both.</p>
-        <a class="text-link" href="rsvp.html">RSVP</a>
+        <p class="invitation-after">Dinner, dancing &amp; happily ever after</p>
+        <a class="invitation-button" href="rsvp.html">RSVP</a>
+        <div class="countdown" data-countdown hidden>
+          <p class="countdown-caption">Until we say “I do”</p>
+          <div class="countdown-units" role="timer" aria-label="Time until our wedding day" aria-live="off">
+            <span><strong data-countdown-days>0</strong><small>Days</small></span>
+            <span><strong data-countdown-hours>00</strong><small>Hours</small></span>
+            <span><strong data-countdown-minutes>00</strong><small>Minutes</small></span>
+            <span><strong data-countdown-seconds>00</strong><small>Seconds</small></span>
+          </div>
+        </div>
+        <p class="weekend-note">The celebration continues<br><a href="the-day.html">Saturday on the terrace at The Boathouse, Putney</a></p>
       </div>
     </section>
   </main>
@@ -71,10 +69,10 @@
   <footer class="colophon">
     <p><span data-names>Rachel &amp; Tadhg</span> · <span data-date>09.04.2027</span></p>
     <p>Questions? <a data-contact-link href="mailto:rachel.and.tadhg@example.com"><span data-contact>rachel.and.tadhg@example.com</span></a></p>
-    <p class="site-version" data-site-version>v18</p>
+    <p class="site-version" data-site-version>v39</p>
   </footer>
 
-  <script src="js/config.js?v=18"></script>
-  <script src="js/app.js?v=18"></script>
+  <script src="js/config.js?v=39"></script>
+  <script src="js/app.js?v=39"></script>
 </body>
 </html>

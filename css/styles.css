@@ -1,12 +1,12 @@
 :root {
-  --paper: #ffffff;
-  --ink: #111111;
-  --ink-soft: #444444;
-  --red: #e11d1d;
+  --paper: #fffaf3;
+  --ink: #513744;
+  --ink-soft: #705c66;
+  --red: #775c80;
   --film: #111111;
-  --line: rgba(17, 17, 17, 0.12);
+  --line: rgba(119, 92, 128, 0.23);
   --font: "Cormorant Garamond", "Palatino Linotype", Palatino, "Times New Roman", serif;
-  --display: "Caveat", "Segoe Print", cursive;
+  --display: var(--font);
   --space: clamp(1.25rem, 4vw, 2.75rem);
   --measure: 38rem;
 }
@@ -28,10 +28,35 @@ body {
   flex-direction: column;
   color: var(--ink);
   background: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 48% 16%, #ffffff 0%, transparent 68%),
+    linear-gradient(120deg, #fffaf3 0%, #fffdf9 48%, #faf1e7 100%);
+  background-attachment: fixed;
   font-family: var(--font);
   font-size: 1.15rem;
   font-weight: 500;
   line-height: 1.55;
+  isolation: isolate;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  width: clamp(220px, 31vw, 480px);
+  height: 90vh;
+  background: url("../img/lilac-wisteria-painted.png?v=31") top center / contain no-repeat;
+  opacity: 0.28;
+}
+
+body::before { left: -5%; top: 5%; }
+body::after { right: -5%; top: 18%; transform: scaleX(-1); }
+
+body[data-page="home"]::before,
+body[data-page="home"]::after {
+  content: none;
 }
 
 img {
@@ -87,6 +112,7 @@ h3 {
   justify-content: space-between;
   gap: 1rem;
   padding: 1.1rem var(--space);
+  border-bottom: 1px solid var(--line);
 }
 
 .wordmark {
@@ -103,8 +129,9 @@ h3 {
 
 .site-nav a {
   text-decoration: none;
-  font-size: 1.05rem;
-  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
 }
 
 .site-nav a:hover,
@@ -148,19 +175,46 @@ main {
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: minmax(170px, 230px) minmax(0, 1fr);
-  gap: clamp(1.5rem, 6vw, 5rem);
-  align-items: start;
-  max-width: 920px;
+  text-align: center;
+  max-width: 820px;
   margin: 0 auto;
-  padding: clamp(1rem, 4vw, 2.5rem) var(--space) 3rem;
+  padding: 1.2rem var(--space) 4rem;
 }
 
 .hero-copy {
-  max-width: 28rem;
-  padding-top: 0.2rem;
+  max-width: 36rem;
+  margin: 0 auto;
 }
+
+.venue-illustration {
+  width: min(100%, 530px);
+  height: auto;
+  margin: 1.5rem auto 2rem;
+  mix-blend-mode: multiply;
+}
+
+.invitation-prelude { margin: 0 auto 1.8rem; font-style: italic; letter-spacing: 0.075em; line-height: 1.55; }
+.couple-names { margin: 0; font-size: clamp(2.3rem, 6vw, 3.5rem); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.couple-names > span { display: block; }
+.couple-ampersand { font-size: 1.4rem; font-style: italic; line-height: 1.8; }
+.invitation-date { margin: 1.8rem 0; font-size: 1.1rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.invitation-rule { width: 42px; height: 1px; background: var(--line); margin: 0 auto 1.5rem; }
+.hero-venue { font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.invitation-after { font-style: italic; letter-spacing: 0.045em; margin: 1.5rem 0 2rem; }
+.invitation-button { display: inline-block; border: 2px solid var(--ink); background: var(--ink); color: var(--paper); padding: 0.8rem 2.2rem; text-decoration: none; text-transform: uppercase; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.12em; transition: background 160ms, color 160ms; }
+.invitation-button:hover { background: var(--ink-soft); color: var(--paper); }
+.invitation-button:focus-visible,
+.site-nav a:focus-visible { outline: 2px solid var(--red); outline-offset: 5px; }
+.weekend-note { font-style: italic; margin: 2.5rem auto 0; font-size: 1.05rem; }
+.weekend-note a { text-underline-offset: 0.25em; text-decoration-color: var(--line); }
+
+.countdown { margin: 2.4rem auto 0; max-width: 24rem; }
+.countdown-caption { margin: 0 0 0.85rem; font-style: italic; color: var(--ink-soft); }
+.countdown-units { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
+.countdown-units > span { display: grid; gap: 0.2rem; }
+.countdown-units > span + span { border-left: 1px solid var(--line); }
+.countdown-units strong { font-size: clamp(1.6rem, 5vw, 2.1rem); font-weight: 400; line-height: 1.2; font-variant-numeric: tabular-nums; color: var(--red); }
+.countdown-units small { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
 
 .headline {
   margin: 0 0 1.5rem;
@@ -277,7 +331,15 @@ main {
 
 .page-title {
   margin-bottom: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: clamp(1.7rem, 5vw, 2.4rem);
+  letter-spacing: 0.14em;
+  padding-block: 1.5rem;
 }
+
+.page > .lede:first-of-type { text-align: center; font-style: italic; }
+.subhead { text-transform: uppercase; letter-spacing: 0.08em; }
 
 .lede {
   max-width: var(--measure);
@@ -378,7 +440,9 @@ main {
 }
 
 .photo-grid .film-strip {
-  padding: 1.1rem 1.45rem;
+  padding: 0.55rem;
+  background: transparent;
+  border: 1px solid var(--line);
 }
 
 .photo-grid figure {
@@ -397,6 +461,7 @@ main {
   background-image: radial-gradient(circle, var(--paper) 2.7px, transparent 2.9px);
   background-size: 1.15rem 100%;
   background-repeat: repeat-x;
+  display: none;
 }
 
 .photo-grid .film-strip::after {
@@ -607,6 +672,7 @@ main {
     gap: 0;
     padding: 0.4rem var(--space) 1rem;
     background: var(--paper);
+    border-bottom: 1px solid var(--line);
   }
 
   .site-nav.is-open {
@@ -617,15 +683,12 @@ main {
     padding: 0.4rem 0;
   }
 
-  .hero {
-    grid-template-columns: minmax(120px, 38%) minmax(0, 1fr);
-    gap: 1rem;
-    padding-top: 0.6rem;
-  }
-
-  .hero .film-strip--vertical {
-    padding: 0.55rem 0.85rem;
-  }
+  .hero { padding-top: 1rem; }
+  body::before { left: -35%; opacity: 0.18; }
+  body::after { right: -35%; opacity: 0.18; }
+  .venue-illustration { width: 100%; margin-bottom: 1rem; }
+  .invitation-prelude { font-size: 1rem; }
+  .invitation-date { font-size: 0.95rem; letter-spacing: 0.09em; }
 
   .headline {
     font-size: clamp(2.3rem, 12vw, 4rem);

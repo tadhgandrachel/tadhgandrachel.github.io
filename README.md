@@ -1,6 +1,14 @@
 # Rachel & Tadhg — wedding website
 
-A small static site for our wedding on **9 April 2027** at **The Ravenswood, Sussex**. White background, film-strip photos, handwritten type, and personal RSVP links that update a Google Sheet guest list. After someone replies, their link becomes read-only — they email you to change it.
+A small static site for our wedding on **9 April 2027** at **The Ravenswood, Sussex**. Satin-white stationery, lilac botanical details, refined serif type, and a Ravenswood illustration, inspired by The Ivory Feather invitation layout. Personal RSVP links update a Google Sheet guest list. After someone replies, their link becomes read-only — they email you to change it.
+
+The home-page venue artwork is `img/ravenswood-watercolour-landscape.png`, a pale landscape watercolour with delicate architectural detail, soft sky and lawn washes, natural painted edges and no figures; decorative lilac wisteria are in `img/lilac-wisteria-painted.png`. Theme colours are set in `css/styles.css`. The illustration is generated from the first gallery photograph on [The Wedding Secret's Ravenswood page](https://www.theweddingsecret.co.uk/the-ravenswood-wedding-venues-west-sussex.html#gallery-1). Keep these assets in the repository when publishing to GitHub Pages.
+
+Artwork was made with the built-in image generation tool using this brief: “A loose ink-and-watercolour illustration of The Ravenswood, preserving its central stone tower, pointed turret, bay windows and Tudor wings. Warm weathered brown roofs with translucent washes and stronger dark-brown timber beams against pale ivory plaster. Soft green trees and shrubs, no people, no dense engraved brick or tile patterns. Transparent background with natural irregular painted edges, no rectangular backdrop or fade.” The PNG has an alpha channel; CSS multiply blending integrates the light areas within the drawing with the page colour, without an edge mask. The earlier pen illustration remains in `img/ravenswood-outline.png` as an alternative.
+
+The current landscape variant was generated using the supplied stationery screenshot as a style reference and the venue photograph for architecture: “A distant, wide venue watercolour with fine grey architectural lines, muted brown-grey roofs, soft sage trees and lawn, and a pale powder-blue sky wash. Irregular painted edges on transparent background; no people, lettering or card.” The earlier watercolour remains in `img/ravenswood-watercolour.png` as an alternative.
+
+The wisteria PNG was created with the built-in image generation tool using this brief: “Realistic hand-painted watercolor and fine pencil wisteria, long hanging clusters of lilac pea-shaped flowers, sparing deeper purple accents, twisting stems and soft sage pinnate leaves. Airy portrait composition on a transparent background, without a paper rectangle.” Its opacity and placement are controlled by the body pseudo-elements in `css/styles.css`; the earlier SVG is retained as an alternative.
 
 Pages: `index.html` (invitation) · `the-day.html` · `getting-there.html` · `photos.html` · `rsvp.html`
 
@@ -34,6 +42,7 @@ Everything guests see is driven by **`js/config.js`**. Change the values, save, 
 | `date.weekday` | Day of the week |
 | `date.timeLabel` | Ceremony time, or leave as `Time to be confirmed` |
 | `date.start` / `date.end` | ISO datetimes used for Add to Calendar |
+| `date.countdownTo` | Countdown target with timezone offset; currently midnight at the start of 9 April 2027 in UK summer time (`+01:00`) |
 | `venue.name` | Venue name |
 | `venue.area` | Short location line (`Sussex, UK`) |
 | `venue.address` | Full address |

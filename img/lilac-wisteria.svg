@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 880" fill="none" stroke="#9d80b5" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <g id="petal" fill="var(--petal-fill, #cbb7de)" fill-opacity="var(--petal-opacity, .38)">
+      <path d="M0 0C-8-16-24-13-22-2C-20 10-7 16 0 19C8 12 17 3 14-5C11-14 3-10 0 0Z"/>
+      <path d="M-17-3C-10-2-4 5 0 16M0 2C4 0 7-3 9-6"/>
+    </g>
+    <g id="raceme">
+      <path d="M0-35C-7 28 10 110 0 221"/>
+      <use href="#petal" transform="translate(-6 0) rotate(32) scale(.8)"/>
+      <use href="#petal" transform="translate(7 9) rotate(-30) scale(.85)"/>
+      <use href="#petal" transform="translate(-15 26) rotate(25)"/>
+      <use href="#petal" transform="translate(17 35) rotate(-22)" stroke="#704985" style="--petal-fill: #89649f; --petal-opacity: .65"/>
+      <use href="#petal" transform="translate(-15 55) rotate(16)"/>
+      <use href="#petal" transform="translate(18 63) rotate(-18)"/>
+      <use href="#petal" transform="translate(0 73) scale(.9)"/>
+      <use href="#petal" transform="translate(-12 87) rotate(20) scale(.9)"/>
+      <use href="#petal" transform="translate(15 99) rotate(-20) scale(.85)"/>
+      <use href="#petal" transform="translate(-9 117) rotate(12) scale(.8)" stroke="#704985" style="--petal-fill: #89649f; --petal-opacity: .58"/>
+      <use href="#petal" transform="translate(11 132) rotate(-16) scale(.7)"/>
+      <use href="#petal" transform="translate(-6 150) rotate(10) scale(.65)"/>
+      <use href="#petal" transform="translate(7 164) rotate(-12) scale(.55)" stroke="#79568f" style="--petal-fill: #9472ad; --petal-opacity: .55"/>
+      <use href="#petal" transform="translate(-2 183) scale(.45)"/>
+      <path d="M1 201C-8 205-4 215 0 221C6 214 7 207 1 201Z" fill="#cbb7de" fill-opacity=".4"/>
+    </g>
+    <g id="leaf">
+      <path d="M0 0C-18-6-29-20-29-39C-10-35 2-18 0 0Z" fill="#b8a5c5" fill-opacity=".12"/>
+      <path d="M0 0L-25-33M-8-10L-20-14M-15-20L-16-30"/>
+    </g>
+    <g id="frond">
+      <path d="M0 0C-8 40 1 91 15 139"/>
+      <use href="#leaf" transform="translate(-2 28) rotate(-18)"/>
+      <use href="#leaf" transform="translate(-2 46) scale(-1 1) rotate(-20)"/>
+      <use href="#leaf" transform="translate(0 66) rotate(-25) scale(.9)"/>
+      <use href="#leaf" transform="translate(4 84) scale(-.85 .85) rotate(-25)"/>
+      <use href="#leaf" transform="translate(8 103) rotate(-30) scale(.75)"/>
+      <use href="#leaf" transform="translate(11 120) scale(-.65 .65) rotate(-25)"/>
+      <use href="#leaf" transform="translate(15 139) rotate(160) scale(.7)"/>
+    </g>
+  </defs>
+  <path d="M-20 0C59 52 28 162 117 193C210 225 197 290 266 313C308 327 337 309 378 326M-20 6C54 61 19 164 114 199C204 230 191 294 265 318M64 150C32 228 72 316 31 400M155 220C138 307 172 365 146 431"/>
+  <use href="#frond" transform="translate(37 86) rotate(-30) scale(.9)"/>
+  <use href="#frond" transform="translate(125 198) rotate(-52) scale(.85)"/>
+  <use href="#frond" transform="translate(261 312) rotate(-35) scale(.8)"/>
+  <use href="#raceme" transform="translate(86 192) rotate(-4) scale(.9)"/>
+  <use href="#raceme" transform="translate(187 278) rotate(5) scale(1.1)"/>
+  <use href="#raceme" transform="translate(294 347) rotate(-5) scale(.9)"/>
+  <use href="#raceme" transform="translate(45 419) rotate(4) scale(1.2)"/>
+  <use href="#raceme" transform="translate(143 450) rotate(-3) scale(.85)"/>
+  <use href="#frond" transform="translate(37 349) rotate(15) scale(.85)"/>
+  <use href="#frond" transform="translate(148 396) rotate(-38) scale(.75)"/>
+</svg>

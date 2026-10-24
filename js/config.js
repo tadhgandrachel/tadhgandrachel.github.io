@@ -15,6 +15,7 @@ window.WEDDING = {
     display: "09.04.2027",
     weekday: "Friday",
     timeLabel: "Time to be confirmed",
+    countdownTo: "2027-04-09T00:00:00+01:00",
     // Used for "Add to calendar" (.ics + Google Calendar)
     start: "2027-04-09T13:00:00",
     end: "2027-04-10T00:00:00",
@@ -113,5 +114,5 @@ window.WEDDING = {
   contactEmail: "tadhgok13@gmail.com",
 
   // Shown in the footer so you can tell a phone has the latest deploy
-  siteVersion: "18",
+  siteVersion: "39",
 };
