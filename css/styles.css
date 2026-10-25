@@ -404,6 +404,12 @@ main {
   margin-bottom: 2.2rem;
 }
 
+.faq-list { max-width: 36rem; margin: 2rem auto; }
+.faq-list section { margin-bottom: 2.2rem; }
+.faq-list h2 { margin: 0 0 0.6rem; font-size: 1.4rem; font-weight: 600; }
+.faq-list p { margin: 0; color: var(--ink-soft); }
+.faq-list a { text-underline-offset: 0.2em; }
+
 .weekend-overview {
   max-width: 34rem;
   margin: 1rem auto 4rem;
@@ -489,13 +495,15 @@ main {
 }
 
 .photo-grid .film-strip {
+  align-self: start;
   padding: 0.55rem;
   background: transparent;
   border: 1px solid var(--line);
 }
 
-.photo-grid figure {
-  aspect-ratio: 3 / 4;
+.photo-grid .film-strip img {
+  display: block;
+  height: auto;
 }
 
 .photo-grid .film-strip::before,

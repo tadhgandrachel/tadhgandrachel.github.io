@@ -106,11 +106,17 @@ window.WEDDING = {
   },
 
   photos: [
-    { src: "img/photos/01.jpg", alt: "Rachel and Tadhg looking out over a waterfall" },
-    { src: "img/photos/02.jpg", alt: "Rachel and Tadhg on a bridge in the forest" },
-    { src: "img/photos/03.jpg", alt: "Rachel and Tadhg among the trees" },
-    { src: "img/photos/04.jpg", alt: "A waterfall in the forest" },
-    // Add more when you have them, e.g. { src: "img/photos/05.jpg", alt: "..." }
+    { src: "img/photos/memories-01.jpg", alt: "Rachel and Tadhg beside an illuminated lake at night" },
+    { src: "img/photos/memories-02.jpg", alt: "Rachel and Tadhg dressed up for a formal evening" },
+    { src: "img/photos/memories-03.jpg", alt: "Rachel and Tadhg on a waterfront balcony" },
+    { src: "img/photos/memories-04.jpg", alt: "Rachel and Tadhg among rolling green hills" },
+    { src: "img/photos/memories-05.jpg", alt: "Rachel and Tadhg beside a lake at sunset" },
+    { src: "img/photos/memories-06.jpg", alt: "Rachel and Tadhg celebrating with keys and drinks" },
+    { src: "img/photos/memories-07.jpg", alt: "Rachel and Tadhg in front of carved arches and mosaic tiles" },
+    { src: "img/photos/memories-08.jpg", alt: "Rachel and Tadhg dining in a garden" },
+    { src: "img/photos/memories-09.jpg", alt: "Rachel and Tadhg visiting an ancient stone temple" },
+    { src: "img/photos/memories-10.jpg", alt: "Rachel and Tadhg showing an engagement ring with a cathedral behind them" },
+    { src: "img/photos/memories-11.jpg", alt: "Rachel and Tadhg celebrating their engagement outside a pub" },
   ],
 
   rsvp: {
@@ -122,5 +128,5 @@ window.WEDDING = {
   contactEmail: "tadhgok13@gmail.com",
 
   // Shown in the footer so you can tell a phone has the latest deploy
-  siteVersion: "60",
+  siteVersion: "62",
 };

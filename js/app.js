@@ -54,6 +54,7 @@
       day: "The day — " + names,
       travel: "Getting there — " + names,
       stay: "Places to stay — " + names,
+      qa: "Q&A — " + names,
       photos: "Photos — " + names,
       rsvp: "RSVP — " + names,
     };
@@ -248,6 +249,7 @@
       day: "the-day.html",
       travel: "getting-there.html",
       stay: "places-to-stay.html",
+      qa: "q-a.html",
       photos: "photos.html",
       rsvp: "rsvp.html",
     }[page];

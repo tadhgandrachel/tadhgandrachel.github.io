@@ -10,7 +10,9 @@ The current landscape variant was generated using the supplied stationery screen
 
 The wisteria PNG was created with the built-in image generation tool using this brief: “Realistic hand-painted watercolor and fine pencil wisteria, long hanging clusters of lilac pea-shaped flowers, sparing deeper purple accents, twisting stems and soft sage pinnate leaves. Airy portrait composition on a transparent background, without a paper rectangle.” Its opacity and placement are controlled by the body pseudo-elements in `css/styles.css`; the earlier SVG is retained as an alternative.
 
-Pages: `index.html` (invitation) · `the-day.html` · `getting-there.html` · `places-to-stay.html` · `photos.html` · `rsvp.html`
+Pages: `index.html` (invitation) · `the-day.html` · `getting-there.html` · `places-to-stay.html` · `photos.html` · `q-a.html` · `rsvp.html`
+
+Guest questions and answers are in `q-a.html`. Update the food answer once the menu is confirmed. The RSVP deadline is populated from `js/config.js`. Parking information was checked against [The Ravenswood guest FAQs](https://theravenswood.co.uk/faqs-guests/).
 
 There is no build step. Open `index.html` locally, or host the folder on GitHub Pages.
 
@@ -204,6 +206,7 @@ index.html          Invitation home page
 the-day.html        When, where, running order
 getting-there.html  Map, flights, taxis, and Saturday to Putney
 places-to-stay.html Venue booking, arrival guidance, and nearby accommodation
+q-a.html           Guest FAQs, including the adults-only wedding policy
 photos.html         Photo gallery
 rsvp.html           RSVP (uses ?g= from the link or the same tab)
 css/styles.css      Layout and invitation styling
