@@ -85,8 +85,6 @@
     setText("[data-flights-heading]", W.flights && W.flights.heading);
     renderParagraphs("[data-flights-body]", W.flights && W.flights.paragraphs);
     setHref("[data-flights-search]", W.flights && W.flights.searchUrl);
-    setText("[data-sunday-heading]", W.sunday && W.sunday.heading);
-    setText("[data-sunday-body]", W.sunday && W.sunday.body);
 
     var headline = $("[data-headline]");
     if (headline) {

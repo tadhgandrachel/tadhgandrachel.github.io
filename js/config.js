@@ -78,21 +78,16 @@ window.WEDDING = {
   travel: {
     heading: "Getting to Putney",
     paragraphs: [
-      "Please do not miss Saturday. Stay local on Friday night if you can, then come into London for Day 2 — roof terrace at The Boathouse, great views of the river, the lot.",
-      "The easiest way is a taxi to East Grinstead, then the train to Clapham Junction and a change for Putney. East Grinstead is about 10 minutes from The Ravenswood. Haywards Heath is a little further by taxi and has more frequent trains.",
-      "A taxi or Uber all the way takes about an hour to an hour and a half, depending on traffic — worth it if you are sharing.",
+      "We would love you to join us on Saturday for drinks on the roof terrace at The Boathouse, overlooking the Thames. There is no need to travel into London on Friday night — stay nearby, enjoy a leisurely breakfast and make your way to Putney for 3pm.",
+      "For the train, take a taxi to East Grinstead, Haywards Heath or Gatwick Airport station. All three are an easy taxi ride from The Ravenswood and have trains to Clapham Junction, where you can change for Putney.",
+      "If you would prefer to travel directly, a taxi or Uber to Putney takes around 1–1½ hours, depending on traffic.",
     ],
-  },
-
-  sunday: {
-    heading: "Sunday 11 April",
-    body: "If you are still standing after Friday and a big Saturday on the terrace, Putney hosts the Oxford and Cambridge Boat Race on Sunday — a perfect excuse to linger by the river.",
   },
 
   flights: {
     heading: "Flights from Dublin",
     paragraphs: [
-      "If you are flying from Dublin, we suggest an early Friday morning arrival into Gatwick, coming home Sunday afternoon. That gets you here for the wedding, Saturday at The Boathouse, and the Boat Race on Sunday if you want it.",
+      "If you are flying from Dublin, Thursday evening or early Friday morning into Gatwick both work well, with a return on Sunday afternoon. The flight search below is set to Friday to Sunday.",
     ],
     origin: "DUB",
     destination: "LGW",
@@ -104,8 +99,7 @@ window.WEDDING = {
   stay: {
     heading: "Where to stay",
     paragraphs: [
-      "The Ravenswood has rooms on site, and it is only about 20–25 minutes from Gatwick — handy if you are flying in.",
-      "If the on-site rooms go, East Grinstead, Forest Row, and Sharpthorne are close and have inns, B&Bs, and small hotels. Haywards Heath is a little further and has more options, still an easy taxi to the venue.",
+      "The Ravenswood has 33 en-suite rooms for the night of our wedding, all including breakfast. Rooms are allocated on a first-come, first-served basis.",
     ],
   },
 
@@ -126,5 +120,5 @@ window.WEDDING = {
   contactEmail: "tadhgok13@gmail.com",
 
   // Shown in the footer so you can tell a phone has the latest deploy
-  siteVersion: "48",
+  siteVersion: "58",
 };

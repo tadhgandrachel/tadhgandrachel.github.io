@@ -54,7 +54,6 @@ Everything guests see is driven by **`js/config.js`**. Change the values, save, 
 | `gettingThere.heading` / `gettingThere.body` | Intro on the Getting there page |
 | `travel.heading` / `travel.paragraphs` | Saturday trains from The Ravenswood to Putney |
 | `flights` | Dublin–Gatwick Skyscanner copy and dates |
-| `sunday.heading` / `sunday.body` | Boat Race note for anyone staying on |
 | `stay.heading` / `stay.paragraphs` | Where to stay, Gatwick, nearby towns |
 | `photos` | File paths and alt text. Add or remove entries as needed |
 | `rsvp.deadline` | Reply-by date shown above the form |

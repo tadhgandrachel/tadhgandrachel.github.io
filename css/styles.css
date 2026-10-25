@@ -346,12 +346,21 @@ main {
   margin: 0 0 2.2rem;
 }
 
-.map-wrap {
+.venue-map {
   max-width: 36rem;
-  margin: 0 0 1rem;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
+  margin: 0 0 2.5rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(81, 55, 68, 0.06);
+}
+
+.map-wrap {
+  aspect-ratio: 16 / 9;
+  min-height: 260px;
+  overflow: hidden;
+  border-radius: 7px;
 }
 
 .map-wrap iframe {
@@ -360,6 +369,23 @@ main {
   border: 0;
   display: block;
 }
+
+.map-caption { padding: 1.1rem 0.8rem 0.7rem; }
+.map-caption h2 { margin: 0 0 0.3rem; font-size: 1.25rem; font-weight: 600; }
+.map-caption p { margin: 0 0 1rem; color: var(--ink-soft); font-size: 1rem; }
+.map-link { display: inline-block; padding: 0.55rem 0.9rem; border: 1px solid var(--line); border-radius: 4px; font-size: 0.95rem; font-weight: 600; text-decoration: none; }
+.map-link:hover { background: var(--ink); color: var(--paper); }
+.map-link:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+
+.accommodation { max-width: 36rem; margin-bottom: 2.5rem; }
+.accommodation h3 { margin: 1.5rem 0 0.5rem; font-size: 1.25rem; font-weight: 600; }
+.accommodation p { margin: 0 0 1rem; }
+.accommodation-code { letter-spacing: 0.06em; white-space: nowrap; }
+.accommodation a { overflow-wrap: anywhere; }
+.stay-details { padding: 1rem 0; border-bottom: 1px solid var(--line); }
+.stay-details summary { cursor: pointer; font-weight: 600; }
+.stay-details summary:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+.stay-details li { margin: 0.5rem 0; }
 
 .skyscanner-wrap {
   max-width: 36rem;
