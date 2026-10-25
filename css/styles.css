@@ -489,12 +489,28 @@ main {
 }
 
 .photo-grid {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  margin: 2.5rem auto 0;
+  padding: 1rem 0 1rem 1.75rem;
+  max-width: 520px;
+}
+
+.photo-grid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--line);
 }
 
 .photo-grid .film-strip {
+  grid-column: 1;
+  width: 100%;
   align-self: start;
   padding: 0.55rem;
   background: transparent;
@@ -506,24 +522,22 @@ main {
   height: auto;
 }
 
-.photo-grid .film-strip::before,
-.photo-grid .film-strip::after {
+.photo-grid .film-strip::before {
   content: "";
   position: absolute;
-  top: 0.32rem;
-  bottom: auto;
-  left: 0.7rem;
-  right: 0.7rem;
-  height: 0.55rem;
-  background-image: radial-gradient(circle, var(--paper) 2.7px, transparent 2.9px);
-  background-size: 1.15rem 100%;
-  background-repeat: repeat-x;
-  display: none;
+  top: 1.5rem;
+  left: -1.75rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+  transform: translateX(-50%);
 }
 
-.photo-grid .film-strip::after {
-  top: auto;
-  bottom: 0.32rem;
+@media (max-width: 600px) {
+  .photo-grid {
+    gap: 2rem;
+  }
 }
 
 .rsvp-form {
