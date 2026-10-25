@@ -39,6 +39,7 @@ window.WEDDING = {
     {
       heading: "Friday 9 April — the wedding",
       label: "Wedding day",
+      timeLabel: "Arrival from 1pm for a 2pm ceremony",
       dressCode: "Cocktail",
       dateLabel: "Friday, 9 April 2027",
       venueLabel: "The Ravenswood",
@@ -54,6 +55,7 @@ window.WEDDING = {
     {
       heading: "Saturday 10 April — Day 2",
       label: "Day two",
+      timeLabel: "3pm",
       dressCode: "Casual",
       dateLabel: "Saturday, 10 April 2027",
       venueLabel: "The Boathouse, Putney",
@@ -97,7 +99,7 @@ window.WEDDING = {
   },
 
   stay: {
-    heading: "Where to stay",
+    heading: "Places to stay",
     paragraphs: [
       "The Ravenswood has 33 en-suite rooms for the night of our wedding, all including breakfast. Rooms are allocated on a first-come, first-served basis.",
     ],
@@ -120,5 +122,5 @@ window.WEDDING = {
   contactEmail: "tadhgok13@gmail.com",
 
   // Shown in the footer so you can tell a phone has the latest deploy
-  siteVersion: "58",
+  siteVersion: "60",
 };

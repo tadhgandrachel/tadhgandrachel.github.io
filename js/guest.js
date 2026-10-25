@@ -44,7 +44,7 @@
       if (url.origin !== window.location.origin) return false;
       var file = url.pathname.split("/").pop() || "";
       if (!file) return true;
-      return /^(index|the-day|getting-there|photos|rsvp)\.html$/i.test(file);
+      return /^(index|the-day|getting-there|places-to-stay|photos|rsvp)\.html$/i.test(file);
     } catch (e) {
       return false;
     }

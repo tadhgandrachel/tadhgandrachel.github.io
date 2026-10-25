@@ -53,6 +53,7 @@
       home: names + " — " + W.date.display,
       day: "The day — " + names,
       travel: "Getting there — " + names,
+      stay: "Places to stay — " + names,
       photos: "Photos — " + names,
       rsvp: "RSVP — " + names,
     };
@@ -124,7 +125,7 @@
         card.innerHTML =
           '<h2>' + escapeHtml(day.label) + '</h2>' +
           '<p class="event-date">' + escapeHtml(day.dateLabel) + '</p>' +
-          '<p class="event-time">' + escapeHtml(day.items[0].time) + '</p>' +
+          '<p class="event-time">' + escapeHtml(day.timeLabel) + '</p>' +
           '<h3>' + escapeHtml(day.venueLabel) + '</h3>' +
           '<p class="event-location">' + escapeHtml(day.locationLabel) + '</p>' +
           '<p class="event-dress-code">Dress code: ' + escapeHtml(day.dressCode) + '</p>' +
@@ -246,6 +247,7 @@
     var current = {
       day: "the-day.html",
       travel: "getting-there.html",
+      stay: "places-to-stay.html",
       photos: "photos.html",
       rsvp: "rsvp.html",
     }[page];
