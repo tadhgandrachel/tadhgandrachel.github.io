@@ -101,7 +101,7 @@ window.WEDDING = {
   stay: {
     heading: "Places to stay",
     paragraphs: [
-      "The Ravenswood has 33 en-suite rooms for the night of our wedding, all including breakfast. Rooms are allocated on a first-come, first-served basis.",
+      "The Ravenswood has 33 en-suite rooms for the night of our wedding, all including breakfast.",
     ],
   },
 
@@ -128,5 +128,5 @@ window.WEDDING = {
   contactEmail: "tadhgok13@gmail.com",
 
   // Shown in the footer so you can tell a phone has the latest deploy
-  siteVersion: "64",
+  siteVersion: "65",
 };
