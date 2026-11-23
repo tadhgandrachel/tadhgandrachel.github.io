@@ -123,18 +123,30 @@ Once **Attending** or **Responded at** is filled, the guest sees a read-only cop
 
 1. In the sheet: **Extensions → Apps Script**.
 2. Delete any code in `Code.gs`.
-3. Paste the contents of [`sheets/Code.gs`](sheets/Code.gs).
-4. Set `SITE_URL` at the top to `https://tadhgandrachel.github.io/`
-5. Optional: set `NOTIFY_EMAIL` if you want an email each time someone RSVPs.
-6. **Save**. Name the project `Wedding RSVP`.
+3. Paste the contents of [`sheets/Code.gs`](sheets/Code.gs). In an existing project, preserve your deployed `SITE_URL`, `GUEST_SHEET` and `NOTIFY_EMAIL` settings.
+4. Add two **HTML** files in Apps Script using **+ → HTML**: name them **Invitation** and **EmailPreview**. Paste [`sheets/Invitation.html`](sheets/Invitation.html) and [`sheets/EmailPreview.html`](sheets/EmailPreview.html) into them respectively.
+5. Set `SITE_URL` at the top to `https://tadhgandrachel.github.io/`. `INVITATION_SHEET_ID` is set to `2043717927`, the tab ID in the current guest-list URL. For a different sheet, use its `gid` value. That tab must already have `Token`, `Name` and `Link` headers in row 1; keep its name consistent with `GUEST_SHEET` for the RSVP endpoint.
+6. Optional: set `NOTIFY_EMAIL` if you want an email each time someone RSVPs.
+7. **Save**. Name the project `Wedding RSVP`.
 
-### Generate the links
+### Generate private links and HTML emails
 
 1. In Apps Script: select `generateGuestLinks` → **Run**. Authorise when asked.
-2. Or reload the spreadsheet and use **Wedding → Generate RSVP links**.
-3. Each named row now has a Token and a full Link to the home page (`/?g=…`). Send that Link to that guest — not a generic URL without `?g=`. Re-run this after updating the script if older rows still point at `/rsvp.html`.
+2. Or reload the spreadsheet and use **Wedding → Generate links and emails**.
+3. Each named row now has a Token, a full Link to the home page (`/?g=…`), **Email subject**, and **Email HTML**. The email's RSVP button contains that row's private link. No emails are sent by this action.
 
-If you add more guests later, run **Generate RSVP links** again. Existing tokens are left as they are.
+If you add more guests or update the email design, run **Generate links and emails** again. Existing tokens are preserved; duplicate tokens stop generation with an error rather than silently changing someone's invitation. Only the token (if missing), link and email output cells are written. RSVP answers, tracking, other columns and formulas are not rewritten. Rows without a Name are skipped.
+
+### Copy an invitation into an email
+
+1. Select a single guest row and choose **Wedding → Preview / copy selected guest email**.
+2. Copy the subject shown at the top into your email subject field.
+3. Click **Select email to copy**, then **⌘C** on Mac or **Ctrl+C** on Windows.
+4. Paste normally into a rich-text email composer. Check the recipient and that the RSVP button points to that guest's private Link. Send a test to yourself before sending invitations.
+
+The **Email HTML** cell contains source code for tools that explicitly accept HTML. Pasting that cell directly into a normal Gmail compose window will not render the design; copy the formatted preview instead. Web fonts and spacing may vary by email client.
+
+The source design is `email/invitation.html`; keep `sheets/Invitation.html` identical when changing the design, then update **Invitation** in Apps Script and regenerate the email columns. The preview always renders the latest installed template for the selected token. Keep this spreadsheet private: its tokens, links and HTML emails grant access to personal invitations. Generating or previewing an invitation does not submit an RSVP.
 
 ### Deploy the web app
 

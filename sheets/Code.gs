@@ -4,7 +4,7 @@
  * Sheet tab "Guests" columns (first row = headers):
  *   Token | Name | Plus one allowed | Plus one name | Email | Link
  *   | Attending | Plus one attending | Plus one name (RSVP) | Dietary | Message | Responded at
- *   | Opened at | Last opened | Opens | Last page
+ *   | Opened at | Last opened | Opens | Last page | Email subject | Email HTML
  *
  * Setup
  * 1. Put guest names in the Name column. For a +1, set Plus one allowed to Yes.
@@ -12,7 +12,8 @@
  * 2. Set SITE_URL below to your live site (no trailing path).
  * 3. In the Apps Script editor: Run → generateGuestLinks
  *    (or use the Wedding menu after you reload the sheet)
- *    That fills Token and Link for every named row.
+ *    Add Invitation.html and EmailPreview.html from sheets/ to the script project.
+ *    That fills Token, Link, Email subject and Email HTML for every named row.
  * 4. Deploy → New deployment → Web app
  *    Execute as: Me
  *    Who has access: Anyone
@@ -32,6 +33,8 @@
  */
 
 var GUEST_SHEET = "Guests";
+var INVITATION_SHEET_ID = 2043717927;
+var INVITATION_SUBJECT = "Rachel & Tadhg · 9 April 2027";
 var SITE_URL = "https://tadhgandrachel.github.io/";
 var NOTIFY_EMAIL = "tadhgok13@gmail.com"; // optional alerts, e.g. "rachel.and.tadhg@example.com"
 
@@ -52,6 +55,8 @@ var HEADERS = [
   "Last opened",
   "Opens",
   "Last page",
+  "Email subject",
+  "Email HTML",
 ];
 
 function doGet(e) {
@@ -151,35 +156,102 @@ function doPost(e) {
 }
 
 function generateGuestLinks() {
-  var sheet = getGuestSheet_();
-  var last = Math.max(sheet.getLastRow(), 1);
-  var width = Math.max(sheet.getLastColumn(), HEADERS.length);
-  var range = sheet.getRange(1, 1, last, width);
-  var data = range.getValues();
-  var cols = colMap_(data[0]);
-  var used = {};
-
-  for (var i = 1; i < data.length; i++) {
-    var name = String(data[i][cols.Name] || "").trim();
-    if (!name) continue;
-
-    var token = String(data[i][cols.Token] || "").trim();
-    if (!token || used[token]) {
-      token = newToken_(used);
-      data[i][cols.Token] = token;
+  var lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    var sheet = getInvitationSheet_();
+    var data = sheet.getDataRange().getValues();
+    var cols = colMap_(data[0]);
+    var used = Object.create(null);
+    for (var i = 1; i < data.length; i++) {
+      var existing = String(data[i][cols.Token] || "").trim();
+      if (!existing) continue;
+      if (used[existing]) {
+        throw new Error("Duplicate invitation token on rows " + used[existing] + " and " + (i + 1) + ". Resolve this before generating invitations.");
+      }
+      used[existing] = i + 1;
     }
-    used[token] = true;
-    data[i][cols.Link] = SITE_URL.replace(/\/?$/, "/") + "?g=" + token;
+    var template = HtmlService.createHtmlOutputFromFile("Invitation").getContent();
+    if (template.indexOf("{{INVITATION_URL}}") === -1) {
+      throw new Error("Invitation.html must contain {{INVITATION_URL}}.");
+    }
+    ensureColumns_(sheet);
+    cols = colMap_(sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0]);
+    for (var j = 1; j < data.length; j++) {
+      if (!String(data[j][cols.Name] || "").trim()) continue;
+      var token = String(data[j][cols.Token] || "").trim();
+      if (!token) {
+        token = newToken_(used);
+        used[token] = j + 1;
+        setCell_(sheet, j + 1, cols, "Token", token);
+      }
+      var link = invitationLink_(token);
+      setCell_(sheet, j + 1, cols, "Link", link);
+      setCell_(sheet, j + 1, cols, "Email subject", INVITATION_SUBJECT);
+      setCell_(sheet, j + 1, cols, "Email HTML", invitationHtml_(template, link));
+    }
+    if (data.length > 1) {
+      sheet.getRange(2, cols["Email HTML"] + 1, data.length - 1, 1)
+        .setWrapStrategy(SpreadsheetApp.WrapStrategy.CLIP);
+    }
+    SpreadsheetApp.flush();
+  } finally {
+    lock.releaseLock();
   }
-
-  range.setValues(data);
 }
 
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu("Wedding")
-    .addItem("Generate RSVP links", "generateGuestLinks")
+    .addItem("Generate links and emails", "generateGuestLinks")
+    .addItem("Preview / copy selected guest email", "previewGuestEmail")
     .addToUi();
+}
+
+function getInvitationSheet_() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(INVITATION_SHEET_ID);
+  if (!sheet) throw new Error("The configured invitation sheet was not found. Check INVITATION_SHEET_ID.");
+  var cols = colMap_(sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 1)).getValues()[0]);
+  ["Token", "Name", "Link"].forEach(function (header) {
+    if (cols[header] == null) throw new Error("The invitation sheet must have a " + header + " header in row 1.");
+  });
+  return sheet;
+}
+
+function invitationLink_(token) {
+  return SITE_URL.replace(/\/?$/, "/") + "?g=" + encodeURIComponent(token);
+}
+
+function invitationHtml_(template, link) {
+  var escaped = link.replace(/&/g, "&amp;").replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return template.replace(/<!--[\s\S]*?-->/g, "")
+    .split("{{INVITATION_URL}}").join(escaped);
+}
+
+function previewGuestEmail() {
+  var sheet = getInvitationSheet_();
+  var selection = SpreadsheetApp.getActiveSpreadsheet().getActiveRange();
+  if (!selection || selection.getSheet().getSheetId() !== sheet.getSheetId() ||
+      selection.getRow() < 2 || selection.getNumRows() !== 1) {
+    throw new Error("Select one guest row in the guest list first.");
+  }
+  var cols = colMap_(sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0]);
+  var values = sheet.getRange(selection.getRow(), 1, 1, sheet.getLastColumn()).getValues()[0];
+  var token = String(values[cols.Token] || "").trim();
+  if (!token || !String(values[cols.Name] || "").trim()) {
+    throw new Error("Run Wedding → Generate links and emails for this named guest first.");
+  }
+  var invitation = invitationHtml_(
+    HtmlService.createHtmlOutputFromFile("Invitation").getContent(), invitationLink_(token)
+  );
+  var preview = HtmlService.createTemplateFromFile("EmailPreview");
+  preview.emailBody = invitation.match(/<body[^>]*>([\s\S]*?)<\/body>/i)[1];
+  preview.guestName = String(values[cols.Name]);
+  preview.subject = INVITATION_SUBJECT;
+  SpreadsheetApp.getUi().showModalDialog(
+    preview.evaluate().setWidth(680).setHeight(800), "Copy invitation email"
+  );
 }
 
 function getGuestSheet_() {
@@ -191,7 +263,7 @@ function getGuestSheet_() {
 
   var first = sheet.getRange(1, 1, 1, HEADERS.length).getValues()[0];
   var empty = first.every(function (cell) { return String(cell).trim() === ""; });
-  if (empty || String(first[0]).trim() !== "Token") {
+  if (empty) {
     sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
     sheet.setFrozenRows(1);
   }

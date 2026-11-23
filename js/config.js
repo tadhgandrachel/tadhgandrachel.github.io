@@ -125,8 +125,8 @@ window.WEDDING = {
     googleScriptUrl: "https://script.google.com/macros/s/AKfycbwMWCZy8kx91bAtOEmc0KGUKPSWHc7eJp-fJ_5P_yRAIwCHRY5YjtK_PMM4Sx2V9i31mQ/exec",
   },
 
-  contactEmail: "tadhgok13@gmail.com",
+  contactEmail: "tadhgandrachel@gmail.com",
 
   // Shown in the footer so you can tell a phone has the latest deploy
-  siteVersion: "65",
+  siteVersion: "66",
 };

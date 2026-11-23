@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,700&amp;display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;background:#fffdf9;">
+  <div style="padding:16px;font:14px/1.5 Arial,sans-serif;background:#f4eef5;color:#513744;">
+    <p style="margin:0 0 8px;"><strong>For:</strong> <?= guestName ?></p>
+    <p style="margin:0 0 8px;"><strong>Subject:</strong> <?= subject ?></p>
+    <button type="button" id="select-email">Select email to copy</button>
+    <p style="margin:8px 0 0;">Click Select email, then press ⌘C (Mac) or Ctrl+C (Windows). Paste into a rich-text email composer using ⌘V or Ctrl+V. Do not use “paste as plain text”.</p>
+    <p style="margin:8px 0 0;">Check the recipient and RSVP link before sending. Send a test to yourself first: email apps may change fonts and spacing. This preview does not send email.</p>
+  </div>
+  <div id="invitation"><?!= emailBody ?></div>
+  <script>
+    document.getElementById("select-email").addEventListener("click", function () {
+      var range = document.createRange();
+      range.selectNodeContents(document.getElementById("invitation"));
+      var selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    });
+    document.getElementById("invitation").addEventListener("click", function (event) {
+      if (event.target.closest("a")) event.preventDefault();
+    });
+  </script>
+</body>
+</html>
